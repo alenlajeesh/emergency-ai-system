@@ -1,0 +1,63 @@
+.imap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.imap__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.imap__marker {
+  cursor: pointer;
+}
+
+.imap__marker-label {
+  font-size: 2.6px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  fill: #0a0d12;
+  pointer-events: none;
+}
+
+.imap__ring {
+  animation: imap-ring 1.6s ease-out infinite;
+}
+
+@keyframes imap-ring {
+  0% { r: 2.5; opacity: 0.9; }
+  100% { r: 7; opacity: 0; }
+}
+
+.imap__legend {
+  position: absolute;
+  bottom: var(--space-3);
+  left: var(--space-3);
+  display: flex;
+  gap: var(--space-4);
+  font-size: 10px;
+  color: var(--text-secondary);
+  background: rgba(10, 13, 18, 0.7);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(4px);
+}
+
+.imap__legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.imap__legend i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}

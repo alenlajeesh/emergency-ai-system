@@ -1,0 +1,104 @@
+.citizen-home {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: var(--space-5) var(--space-5) var(--space-6);
+}
+
+.citizen-home__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.citizen-home__mark {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+}
+
+.citizen-home__location {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 11px;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 5px var(--space-2);
+  border-radius: 999px;
+}
+
+.citizen-home__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.citizen-home__prompt {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.citizen-home__hint {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  max-width: 240px;
+}
+
+.citizen-home__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.citizen-home__nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  width: 100%;
+  color: var(--text-primary);
+  text-align: left;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.citizen-home__nav-item:active {
+  transform: scale(0.98);
+}
+
+.citizen-home__nav-item:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-raised);
+}
+
+.citizen-home__nav-icon {
+  color: var(--text-secondary);
+  display: flex;
+}
+
+.citizen-home__nav-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.citizen-home__nav-sub {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 400;
+}

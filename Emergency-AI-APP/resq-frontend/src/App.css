@@ -1,0 +1,17 @@
+.dev-switch {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  font-size: 10px;
+  color: var(--text-tertiary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+  border-radius: 999px;
+  z-index: 50;
+}
+
+.dev-switch:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}

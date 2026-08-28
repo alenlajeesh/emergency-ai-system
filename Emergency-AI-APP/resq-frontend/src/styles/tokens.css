@@ -1,0 +1,87 @@
+:root {
+  /* ---- Color: control-room dark, status colors are the only saturation ---- */
+  --bg: #0a0d12;
+  --surface: #12161d;
+  --surface-raised: #1a1f28;
+  --border: #232a35;
+  --border-strong: #2f3846;
+
+  --text-primary: #e9edf3;
+  --text-secondary: #9aa5b4;
+  --text-tertiary: #5c6675;
+
+  --status-critical: #ff4d4d;
+  --status-critical-dim: #3a1616;
+  --status-medium: #ffb020;
+  --status-medium-dim: #362a0d;
+  --status-low: #2fd889;
+  --status-low-dim: #0f2b1f;
+  --status-info: #4d9dff;
+  --status-info-dim: #12233b;
+
+  --accent: #ff5a36;       /* the one warm color: reserved for the report action */
+  --accent-dim: #3a1a10;
+  --accent-light: #ff9a7a;
+  --accent-dark: #b23315;
+
+  /* ---- Type ---- */
+  --font-display: 'Barlow Condensed', 'Oswald', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* ---- Spacing scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* ---- Citizen app theme: white + sky blue, overrides the dark defaults ----
+   Scoped to .app-shell so the responder console (.wide-shell) stays dark.
+   Every component already reads these via var(--x), so this one block
+   re-themes the whole citizen app. ---- */
+.app-shell {
+  --bg: #f3f8ff;
+  --surface: #ffffff;
+  --surface-raised: #eef5ff;
+  --border: #e2ecfb;
+  --border-strong: #c7dcf7;
+
+  --text-primary: #14233d;
+  --text-secondary: #5b7295;
+  --text-tertiary: #93a8c7;
+
+  --status-critical: #e5484d;
+  --status-critical-dim: #fdecec;
+  --status-medium: #f0a020;
+  --status-medium-dim: #fff3e0;
+  --status-low: #1fb573;
+  --status-low-dim: #e5f8ef;
+  --status-info: #3b9fff;
+  --status-info-dim: #eaf4ff;
+
+  --accent: #2f6fed;
+  --accent-dim: #e7f0ff;
+  --accent-light: #6fa0ff;
+  --accent-dark: #1447b8;
+
+  --shadow-card: 0 1px 2px rgba(20, 35, 61, 0.04), 0 6px 20px rgba(47, 111, 237, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
