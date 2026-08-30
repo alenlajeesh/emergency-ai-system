@@ -1,3 +1,4 @@
 data/incidents.json
 .env
 uploads/
+node_modules/
