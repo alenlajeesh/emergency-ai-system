@@ -1,4 +1,20 @@
-data/incidents.json
+# Local environment files and secrets
 .env
+.env.*
+!.env.example
+
+# Runtime data and generated dependencies
+data/
 uploads/
 node_modules/
+coverage/
+.vite/
+
+# Logs and OS/editor files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
