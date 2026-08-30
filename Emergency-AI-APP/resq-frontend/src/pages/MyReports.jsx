@@ -1,45 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import { listIncidents, loadIncidents } from '../mock/api';
-import StatusBadge from '../components/StatusBadge';
+import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft, MapPin, Plus } from 'lucide-react';
+import { apiClient } from '../api/client';
+import StatusPill from '../components/StatusPill';
+import useRealtime from '../hooks/useRealtime';
 import './MyReports.css';
 
 export default function MyReports() {
-  const navigate = useNavigate();
-  const [, refresh] = useState(0);
-  const incidents = listIncidents();
-
-  useEffect(() => { loadIncidents().then(() => refresh((n) => n + 1)); }, []);
-
-  return (
-    <div className="myreports">
-      <header className="myreports__header">
-        <button className="myreports__back" onClick={() => navigate('/')} aria-label="Home">
-          <ArrowLeft size={18} />
-        </button>
-        <h1 className="myreports__title">My Reports</h1>
-      </header>
-
-      {incidents.length === 0 ? (
-        <div className="myreports__empty">
-          <p>No reports yet.</p>
-          <p className="myreports__empty-sub">Reports you submit will show up here.</p>
-        </div>
-      ) : (
-        <div className="myreports__list">
-          {incidents.map((inc) => (
-            <button key={inc.id} className="myreports__item" onClick={() => navigate(`/status/${inc.id}`)}>
-              <div className="myreports__item-top">
-                <span className="mono myreports__item-id">{inc.id}</span>
-                <StatusBadge severity={inc.analysis.severity} />
-              </div>
-              <p className="myreports__item-cat">{inc.analysis.category.icon} {inc.analysis.category.label}</p>
-              <p className="myreports__item-status">{inc.status.replace('_', ' ')}</p>
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  const [items, setItems] = useState([]); const [error, setError] = useState('');
+  const load = useCallback(() => apiClient.citizenIncidents().then(setItems).catch((reason) => setError(reason.message)), []);
+  useEffect(() => { load(); }, [load]); useRealtime(load);
+  return <div className="reports-page"><header><Link to="/citizen"><ArrowLeft size={18}/> Workspace</Link><Link className="reports-page__new" to="/citizen/report"><Plus size={15}/> New report</Link></header><main><p className="reports-page__eyebrow">PRIVATE TO YOUR ACCOUNT</p><h1>My reports</h1><p className="reports-page__lede">Track reports you have submitted. New status updates appear automatically.</p>{error && <p className="workspace-error">{error}</p>}<div className="reports-page__list">{items.length === 0 ? <div className="reports-page__empty">You have not submitted any reports yet.</div> : items.map((item) => <Link key={item.id} className="reports-page__item" to={`/citizen/incidents/${item.number}`}><div><div className="reports-page__itemtop"><span>{item.id}</span><StatusPill value={item.severity}/></div><h2>{item.category.icon} {item.category.label}</h2><p>{item.text}</p><small><MapPin size={12}/>{item.location.label} · {new Date(item.createdAt).toLocaleString()}</small></div><StatusPill value={item.status}/></Link>)}</div></main></div>;
 }

@@ -1,75 +1,38 @@
-# RESQ — Frontend (Citizen + Responder)
+# RESQ frontend
 
-React (Vite) + plain CSS, paired with a dependency-free Node API. The API
-persists incidents in `resq-backend/data/incidents.json` and includes text
-classification, simulated location lookup, responder selection, and status updates.
+React + Vite application backed by the RESQ Express/MongoDB API. There is no mock data layer: every report, status, responder profile, and dashboard item comes from the API.
 
 ## Run it
 
-```bash
-cd resq-backend
-npm run dev
+Start `resq-backend` first, then:
 
-# in another terminal
-cd ../resq-frontend
+```powershell
+cd resq-frontend
 npm install
+Copy-Item .env.example .env
 npm run dev
 ```
 
-Open the printed local URL. There's a small "Responder console →" link in
-the bottom-right corner to jump between the citizen app and the dispatcher
-dashboard — that's a dev convenience, remove it once you have real auth
-and separate apps/roles.
+The Vite server proxies `/api` and `/socket.io` to `http://localhost:3001`.
 
-## What's built
+## Roles and routes
 
-**Citizen side**
-- `/` — Home screen, big radar-pulse report button
-- `/report` — Report flow: type / speak (simulated) / photo, submits to
-  the mock AI, shows the analysis card (type, severity, confidence,
-  recommended response), confirm & send
-- `/status/:id` — Live status tracker that auto-advances through
-  reported → dispatched → en route → arrived → resolved
-- `/reports` — List of past reports
-- `/contacts` — Static emergency numbers
+| Role | UI |
+| --- | --- |
+| Public | `/`, `/login`, `/signup` |
+| Citizen | `/citizen`, `/citizen/report`, `/citizen/reports`, `/citizen/incidents/:number` |
+| Responder | `/responder` |
+| Administrator | `/admin/control-center` |
 
-**Responder side**
-- `/responder` — Incident queue, a simulated map (SVG, deterministic
-  marker positions from incident id), and a detail panel with
-  Accept & Dispatch
+The frontend route guard is a convenience; the Express API independently enforces the same role boundaries.
 
-## API endpoints
+## Maps
 
-`GET /api/health`, `POST /api/analyze`, `GET /api/location`, `GET/POST/DELETE /api/incidents`, and `GET/PATCH /api/incidents/:id`.
+Add the browser key to `.env`:
 
-## Classification and fallback
+```env
+VITE_GOOGLE_MAPS_API_KEY=your-browser-restricted-key
+VITE_GOOGLE_MAP_ID=
+```
 
-`src/mock/api.js`:
-- `classifyReport({ text })` — keyword-scored category + severity +
-  confidence. Swap this for your real NLP classification model — keep
-  the return shape `{ category, severity, confidence, required }`.
-- `detectLocation()` — fake reverse geocoding. Swap for a real
-  geolocation + maps API call.
-- `findNearestResponders(requiredTypes)` — sorts a static responder list
-  by distance. This is the seed for the "Dijkstra's algorithm for
-  routing" piece mentioned in the spec — real distances would come from
-  a routing API or your own graph.
-- `createIncident` / `listIncidents` / `advanceStatus` — in-memory store.
-  Swap for your backend once it exists (this is exactly your API
-  surface: POST /incidents, GET /incidents, PATCH /incidents/:id).
-
-## Design tokens
-
-Everything visual is driven from `src/styles/tokens.css` — colors, type,
-spacing. Change values there rather than hunting through components.
-
-## Next steps (suggested order)
-
-1. Wire `classifyReport` to a real NLP call (or your own model) —
-   component code doesn't change.
-2. Replace `detectLocation` with real geolocation + reverse geocoding.
-3. Stand up a backend for the incident store; replace the in-memory
-   functions in `api.js` with `fetch` calls.
-4. Add the duplicate-report grouping (location + time + text similarity)
-   mentioned in the spec — this slots into `createIncident`.
-5. Real map (Leaflet/Mapbox) in place of `IncidentMap.jsx`'s SVG stand-in.
+The browser key renders the map only. Reverse-geocoding and road routes are made from the protected backend. See [Google Maps setup](../docs/GOOGLE_MAPS_SETUP.md) for the two-key configuration.

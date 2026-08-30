@@ -1,35 +1,33 @@
 import { useEffect } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import CitizenHome from './pages/CitizenHome';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import RequireRole from './auth/RequireRole';
+import LandingPage from './pages/LandingPage';
+import AuthPage from './pages/AuthPage';
+import CitizenDashboard from './pages/CitizenDashboard';
 import ReportEmergency from './pages/ReportEmergency';
-import IncidentStatus from './pages/IncidentStatus';
 import MyReports from './pages/MyReports';
-import EmergencyContacts from './pages/EmergencyContacts';
+import IncidentStatus from './pages/IncidentStatus';
 import ResponderDashboard from './pages/ResponderDashboard';
+import AdminControlCenter from './pages/AdminControlCenter';
 import './App.css';
 
-export default function App() {
+function PageTheme() {
   const location = useLocation();
-  const isResponder = location.pathname.startsWith('/responder');
+  useEffect(() => { document.body.dataset.theme = location.pathname.startsWith('/responder') || location.pathname.startsWith('/admin') ? 'dark' : 'light'; }, [location.pathname]);
+  return null;
+}
 
-  useEffect(() => {
-    document.body.dataset.theme = isResponder ? 'dark' : 'light';
-  }, [isResponder]);
-
-  return (
-    <div className={isResponder ? 'wide-shell' : 'app-shell'}>
-      <Routes>
-        <Route path="/" element={<CitizenHome />} />
-        <Route path="/report" element={<ReportEmergency />} />
-        <Route path="/status/:id" element={<IncidentStatus />} />
-        <Route path="/reports" element={<MyReports />} />
-        <Route path="/contacts" element={<EmergencyContacts />} />
-        <Route path="/responder" element={<ResponderDashboard />} />
-      </Routes>
-
-      <Link to={isResponder ? '/' : '/responder'} className="dev-switch mono">
-        {isResponder ? '← Citizen view' : 'Responder console →'}
-      </Link>
-    </div>
-  );
+export default function App() {
+  return <><PageTheme/><Routes>
+    <Route path="/" element={<LandingPage/>}/>
+    <Route path="/login" element={<AuthPage/>}/>
+    <Route path="/signup" element={<AuthPage/>}/>
+    <Route path="/citizen" element={<RequireRole role="citizen"><CitizenDashboard/></RequireRole>}/>
+    <Route path="/citizen/report" element={<RequireRole role="citizen"><ReportEmergency/></RequireRole>}/>
+    <Route path="/citizen/reports" element={<RequireRole role="citizen"><MyReports/></RequireRole>}/>
+    <Route path="/citizen/incidents/:number" element={<RequireRole role="citizen"><IncidentStatus/></RequireRole>}/>
+    <Route path="/responder" element={<RequireRole role="responder"><ResponderDashboard/></RequireRole>}/>
+    <Route path="/admin/control-center" element={<RequireRole role="admin"><AdminControlCenter/></RequireRole>}/>
+    <Route path="*" element={<Navigate to="/" replace/>}/>
+  </Routes></>;
 }

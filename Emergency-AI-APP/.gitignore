@@ -1,0 +1,2 @@
+# Workspace-level dependency directories are never source artifacts.
+node_modules/

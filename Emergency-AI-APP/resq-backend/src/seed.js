@@ -1,1 +1,28 @@
-import 'dotenv/config'; import connectDatabase from './config/database.js'; import Responder from './models/Responder.js'; import User from './models/User.js'; await connectDatabase(); await Responder.bulkWrite([{updateOne:{filter:{code:'AMB-01'},update:{$set:{code:'AMB-01',type:'medical',label:'Ambulance 01',availability:'available',location:{type:'Point',coordinates:[77.602,12.975]}}},upsert:true}},{updateOne:{filter:{code:'POL-01'},update:{$set:{code:'POL-01',type:'security',label:'Police 01',availability:'available',location:{type:'Point',coordinates:[77.59,12.968]}}},upsert:true}},{updateOne:{filter:{code:'FIRE-01'},update:{$set:{code:'FIRE-01',type:'fire',label:'Fire 01',availability:'available',location:{type:'Point',coordinates:[77.61,12.96]}}},upsert:true}}]); if(!await User.exists({email:'dispatcher@resq.local'}))await User.create({name:'Demo Dispatcher',email:'dispatcher@resq.local',password:'ChangeMe123!',role:'dispatcher'});console.log('Seed complete. Demo dispatcher: dispatcher@resq.local');process.exit(0);
+import 'dotenv/config';
+import connectDatabase from './config/database.js';
+import User from './models/User.js';
+import { hasRole, rolesForUser } from './utils/roles.js';
+
+await connectDatabase();
+
+const email = process.env.ADMIN_EMAIL || 'admin@resq.local';
+const password = process.env.ADMIN_PASSWORD || 'ChangeMe123!';
+let admin = await User.findOne({ email });
+if (!admin) {
+  admin = await User.create({ name: 'RESQ Administrator', email, password, role: 'admin' });
+  console.log(`Created admin account: ${email}`);
+} else if (!hasRole(admin, 'admin')) {
+  admin.role = 'admin';
+  admin.roles = [...new Set([...rolesForUser(admin), 'admin'])];
+  if (process.env.RESET_ADMIN_PASSWORD === 'true') admin.password = password;
+  await admin.save();
+  console.log(`Promoted existing account to admin: ${email}`);
+} else {
+  if (process.env.RESET_ADMIN_PASSWORD === 'true') {
+    admin.password = password;
+    await admin.save();
+    console.log(`Reset password for admin account: ${email}`);
+  } else console.log(`Admin account already exists: ${email}`);
+}
+console.log('Change the development admin password before deployment.');
+process.exit(0);

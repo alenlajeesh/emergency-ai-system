@@ -1,84 +1,21 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Check, ArrowLeft } from 'lucide-react';
-import { getIncident, advanceStatus } from '../mock/api';
-import StatusBadge from '../components/StatusBadge';
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { ArrowLeft, Check, Clock3, MapPin, Radio } from 'lucide-react';
+import { apiClient } from '../api/client';
+import ResqMap from '../components/ResqMap';
+import StatusPill from '../components/StatusPill';
+import useRealtime from '../hooks/useRealtime';
 import './IncidentStatus.css';
 
-const STEPS = [
-  { key: 'reported', label: 'Report received' },
-  { key: 'dispatched', label: 'Response assigned' },
-  { key: 'en_route', label: 'Responder en route' },
-  { key: 'arrived', label: 'Responder arrived' },
-  { key: 'resolved', label: 'Incident resolved' },
-];
+const stages = [['reported','Report received'],['dispatched','Responder assigned'],['en_route','Responder en route'],['arrived','Responder arrived'],['resolved','Incident resolved']];
 
 export default function IncidentStatus() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [incident, setIncident] = useState(() => getIncident(id));
-
-  useEffect(() => {
-    if (!incident || incident.status === 'resolved') return;
-    const timer = setTimeout(() => {
-      setIncident({ ...advanceStatus(id) });
-    }, 2600);
-    return () => clearTimeout(timer);
-  }, [incident, id]);
-
-  if (!incident) {
-    return (
-      <div className="istatus istatus--empty">
-        <p>Incident not found.</p>
-        <button className="istatus__link" onClick={() => navigate('/')}>Back to home</button>
-      </div>
-    );
-  }
-
-  const stepIndex = STEPS.findIndex((s) => s.key === incident.status);
-
-  return (
-    <div className="istatus">
-      <header className="istatus__header">
-        <button className="istatus__back" onClick={() => navigate('/')} aria-label="Home">
-          <ArrowLeft size={18} />
-        </button>
-        <span className="mono istatus__id">{incident.id}</span>
-      </header>
-
-      <div className="istatus__summary">
-        <span className="istatus__cat">{incident.analysis.category.icon} {incident.analysis.category.label}</span>
-        <StatusBadge severity={incident.analysis.severity} />
-      </div>
-
-      {incident.status !== 'resolved' && (
-        <p className="istatus__eta mono">ETA ~{incident.etaMin} min</p>
-      )}
-
-      <ol className="istatus__timeline">
-        {STEPS.map((step, i) => {
-          const done = i <= stepIndex;
-          const active = i === stepIndex;
-          return (
-            <li key={step.key} className={`istatus__step ${done ? 'istatus__step--done' : ''}`}>
-              <span className={`istatus__dot ${active ? 'istatus__dot--active' : ''}`}>
-                {done ? <Check size={12} /> : null}
-              </span>
-              <span className="istatus__step-label">{step.label}</span>
-            </li>
-          );
-        })}
-      </ol>
-
-      <div className="istatus__responders">
-        <p className="istatus__responders-title mono">DISPATCHED</p>
-        {incident.responders.map((r) => (
-          <div key={r.id} className="istatus__responder">
-            <span>{r.label}</span>
-            <span className="mono">{r.distanceKm} km</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  const { number } = useParams(); const route = useLocation(); const [incident, setIncident] = useState(null); const [error, setError] = useState('');
+  const load = useCallback(() => apiClient.citizenIncident(number).then(setIncident).catch((reason) => setError(reason.message)), [number]);
+  useEffect(() => { load(); }, [load]); const live = useRealtime(load);
+  if (error) return <div className="incident-status incident-status--error"><Link to="/citizen"><ArrowLeft size={18}/> Back to workspace</Link><p>{error}</p></div>;
+  if (!incident) return <div className="incident-status incident-status--error">Loading your incident…</div>;
+  const completed = stages.findIndex(([status]) => status === incident.status);
+  const markers = [{ id: 'incident', title: incident.id, position: { lat: incident.location.lat, lng: incident.location.lng }, kind: incident.severity, label: '!' }, ...incident.assignedResponders.filter((unit) => unit.location).map((unit) => ({ id: unit.id, title: unit.name, position: { lat: unit.location.lat, lng: unit.location.lng }, kind: 'responder', label: 'R' }))];
+  return <div className="incident-status"><header><Link to="/citizen/reports"><ArrowLeft size={18}/> My reports</Link><span className={`live-indicator ${live ? 'on' : ''}`}><i/> {live ? 'Live updates' : 'Connecting'}</span></header><main>{route.state?.merged && <p className="incident-status__merged">Your report was added to an existing nearby incident. This helps responders avoid duplicate dispatches.</p>}<section className="incident-status__hero"><div><p>{incident.id}</p><h1>{incident.category.icon} {incident.category.label}</h1><span><MapPin size={14}/>{incident.location.label}</span></div><StatusPill value={incident.status}/></section><section className="incident-status__grid"><div className="incident-status__timeline"><h2>Response progress</h2>{incident.status !== 'resolved' && incident.etaMin && <p className="incident-status__eta"><Clock3 size={15}/> Estimated response: ~{incident.etaMin} min</p>}<ol>{stages.map(([status,label], index) => <li key={status} className={index <= completed ? 'done' : ''}><i>{index < completed ? <Check size={12}/> : index + 1}</i><span>{label}</span></li>)}</ol><div className="incident-status__details"><h3>Report details</h3><p>{incident.text}</p>{incident.reportCount > 1 && <span><Radio size={13}/>{incident.reportCount} reports have been grouped at this location</span>}</div></div><div className="incident-status__map"><ResqMap markers={markers} center={{ lat: incident.location.lat, lng: incident.location.lng }} zoom={14}/><p>Map shows your reported location and assigned responders who have shared a location.</p></div></section></main></div>;
 }

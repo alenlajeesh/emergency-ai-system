@@ -1,9 +1,125 @@
-import Incident from '../models/Incident.js'; import Responder from '../models/Responder.js'; import AuditLog from '../models/AuditLog.js'; import { analyzeText,recommendation,missingFields } from '../utils/analysis.js';
-const asDto=i=>({id:`INC${i.incidentNo}`,dbId:i._id,text:i.reports[0]?.text,reportMode:i.reports[0]?.mode,mode:i.mode,analysis:{category:{key:i.category,label:{medical:'Medical Emergency',accident:'Accident',fire:'Fire',security:'Security',disaster:'Disaster',missing:'Missing Person',other:'Other'}[i.category],icon:{medical:'🚑',accident:'🚗',fire:'🔥',security:'👮',disaster:'🌊',missing:'🔍',other:'⚠️'}[i.category]},severity:i.severity,confidence:i.confidence,required:i.requiredServices},location:{lat:i.location.coordinates[1],lng:i.location.coordinates[0],label:i.location.label},status:i.status,responders:i.responders.map(r=>({id:r.code,label:r.label,type:r.type,distanceKm:r.distanceKm||2.4})),etaMin:i.etaMin,recommendedAction:i.recommendedAction,missingFields:i.missingFields,manualVerification:i.manualVerification,createdAt:i.createdAt,reportCount:i.reports.length});
-async function nextNumber(){const last=await Incident.findOne().sort('-incidentNo').select('incidentNo');return (last?.incidentNo||1023)+1;}
-export async function analyze(req,res){if(!req.body.text?.trim())return res.status(400).json({error:'text is required'});const a=analyzeText(req.body.text);res.json({category:{key:a.category,label:a.categoryLabel,icon:a.icon},severity:a.severity,confidence:a.confidence,required:a.requiredServices});}
-export async function list(req,res){const filter={};if(req.query.status)filter.status=req.query.status;if(req.query.mode)filter.mode=req.query.mode;const items=await Incident.find(filter).populate('responders').sort('-createdAt');res.json(items.map(asDto));}
-export async function create(req,res){const {text,reportMode='text',simMode='normal',location,imageUrl}=req.body;if(!text?.trim()||!location?.label||location.lat===undefined||location.lng===undefined)return res.status(400).json({error:'text and complete location are required'});const a=analyzeText(text);const now=new Date(Date.now()-10*60*1000);const near=await Incident.findOne({'location.coordinates':{$near:{$geometry:{type:'Point',coordinates:[Number(location.lng),Number(location.lat)]},$maxDistance:250}},createdAt:{$gte:now},status:{$ne:'resolved'}}).populate('responders');if(near){near.reports.push({reporter:req.user?._id,text,mode:reportMode,imageUrl});await near.save();return res.status(200).json({...asDto(near),duplicate:true});}const candidates=await Responder.find({availability:'available',type:{$in:a.requiredServices}}).limit(3);const incident=await Incident.create({incidentNo:await nextNumber(),reports:[{reporter:req.user?._id,text,mode:reportMode,imageUrl}],mode:simMode,category:a.category,severity:a.severity,confidence:a.confidence,requiredServices:a.requiredServices,location:{label:location.label,coordinates:[Number(location.lng),Number(location.lat)]},responders:candidates.map(x=>x._id),etaMin:Math.floor(3+Math.random()*8),recommendedAction:recommendation(a.category),missingFields:missingFields[a.category],manualVerification:a.manualVerification,statusHistory:[{status:'reported',by:req.user?._id}]});await AuditLog.create({actor:req.user?._id,action:'incident.created',target:String(incident._id)});const populated=await incident.populate('responders');res.status(201).json(asDto(populated));}
-export async function get(req,res){const i=await Incident.findOne({incidentNo:Number(req.params.number)}).populate('responders');if(!i)return res.status(404).json({error:'Incident not found'});res.json(asDto(i));}
-export async function updateStatus(req,res){const allowed=['reported','analyzing','dispatched','en_route','arrived','resolved'];if(!allowed.includes(req.body.status))return res.status(400).json({error:'Invalid status'});const i=await Incident.findOne({incidentNo:Number(req.params.number)}).populate('responders');if(!i)return res.status(404).json({error:'Incident not found'});i.status=req.body.status;i.statusHistory.push({status:i.status,by:req.user._id});if(i.status==='dispatched'){await Responder.updateMany({_id:{$in:i.responders.map(x=>x._id)}},{availability:'assigned'});}await i.save();res.json(asDto(i));}
-export async function analytics(req,res){const [total,critical,byCategory,resolved]=await Promise.all([Incident.countDocuments(),Incident.countDocuments({severity:'critical'}),Incident.aggregate([{$group:{_id:'$category',count:{$sum:1}}}]),Incident.countDocuments({status:'resolved'})]);const hotspots=await Incident.aggregate([{$group:{_id:'$location.label',incidents:{$sum:1},critical:{$sum:{$cond:[{$eq:['$severity','critical']},1,0]}}}},{$sort:{incidents:-1}},{$limit:5}]);res.json({total,critical,resolved,successRate:total?Math.round(resolved/total*100):0,byCategory,hotspots});}
+import Incident from '../models/Incident.js';
+import Responder from '../models/Responder.js';
+import AuditLog from '../models/AuditLog.js';
+import { analyzeText, missingFields, recommendation } from '../utils/analysis.js';
+import { nextIncidentNumber } from '../utils/counter.js';
+import { incidentDto } from '../utils/incidentDto.js';
+import { emit } from '../realtime.js';
+
+const populateIncident = (query) => query.populate({ path: 'assignedResponders', populate: { path: 'user', select: 'name' } });
+const locationIsValid = (location) => Number.isFinite(Number(location?.lat)) && Number.isFinite(Number(location?.lng))
+  && Math.abs(Number(location.lat)) <= 90 && Math.abs(Number(location.lng)) <= 180;
+
+async function notifyIncident(kind, incident) {
+  const dto = incidentDto(incident);
+  const reporterIds = [...new Set(incident.reports.map((report) => String(report.reporter)))];
+  emit('responders', kind, dto);
+  emit('admins', kind, dto);
+  reporterIds.forEach((id) => emit(`user:${id}`, kind, dto));
+  (incident.assignedResponders || []).forEach((responder) => responder.user && emit(`user:${responder.user._id}`, kind, dto));
+}
+
+export async function preview(req, res) {
+  const text = req.body.text?.trim();
+  if (!text) return res.status(400).json({ error: 'Describe the emergency first' });
+  const triage = analyzeText(text);
+  return res.json({
+    category: triage.category,
+    severity: triage.severity,
+    confidence: triage.confidence,
+    requiredServices: triage.requiredServices,
+    manualVerification: triage.manualVerification,
+  });
+}
+
+export async function create(req, res) {
+  const { text, reportMode = 'text', location, imageUrl } = req.body;
+  if (!text?.trim() || !location?.label?.trim() || !locationIsValid(location)) {
+    return res.status(400).json({ error: 'A description and a valid current location are required' });
+  }
+
+  const point = [Number(location.lng), Number(location.lat)];
+  const triage = analyzeText(text);
+  const recentTime = new Date(Date.now() - (10 * 60 * 1000));
+  const duplicate = await populateIncident(Incident.findOne({
+    'location.point': { $near: { $geometry: { type: 'Point', coordinates: point }, $maxDistance: 200 } },
+    createdAt: { $gte: recentTime },
+    status: { $ne: 'resolved' },
+  }));
+
+  if (duplicate && duplicate.category === triage.category) {
+    duplicate.reports.push({ reporter: req.user._id, text: text.trim(), mode: reportMode, imageUrl });
+    await duplicate.save();
+    await notifyIncident('incident:updated', duplicate);
+    return res.status(200).json({ ...incidentDto(duplicate), mergedWithExisting: true });
+  }
+
+  const incident = await Incident.create({
+    incidentNo: await nextIncidentNumber(),
+    reports: [{ reporter: req.user._id, text: text.trim(), mode: reportMode, imageUrl }],
+    category: triage.category,
+    severity: triage.severity,
+    confidence: triage.confidence,
+    requiredServices: triage.requiredServices,
+    location: { label: location.label.trim(), point: { type: 'Point', coordinates: point } },
+    recommendedAction: recommendation[triage.category],
+    missingFields: missingFields[triage.category],
+    manualVerification: triage.manualVerification,
+    statusHistory: [{ status: 'reported', by: req.user._id }],
+  });
+  // Only notify response services required by this incident. Every responder
+  // still receives status updates later if they are assigned to it.
+  await AuditLog.create({ actor: req.user._id, action: 'incident.created', target: String(incident._id) });
+  const populated = await populateIncident(Incident.findById(incident._id));
+  await notifyIncident('incident:created', populated);
+  return res.status(201).json(incidentDto(populated));
+}
+
+export async function listCitizenIncidents(req, res) {
+  const incidents = await populateIncident(Incident.find({ 'reports.reporter': req.user._id }).sort('-createdAt'));
+  return res.json(incidents.map(incidentDto));
+}
+
+export async function getCitizenIncident(req, res) {
+  const incident = await populateIncident(Incident.findOne({ incidentNo: Number(req.params.number), 'reports.reporter': req.user._id }));
+  if (!incident) return res.status(404).json({ error: 'Incident not found' });
+  return res.json(incidentDto(incident));
+}
+
+export async function getResponderIncident(req, res) {
+  const responder = await Responder.findOne({ user: req.user._id });
+  if (!responder) return res.status(403).json({ error: 'Responder profile not found' });
+  const incident = await populateIncident(Incident.findOne({ incidentNo: Number(req.params.number), status: { $ne: 'resolved' } }));
+  if (!incident) return res.status(404).json({ error: 'Incident not found' });
+  return res.json(incidentDto(incident));
+}
+
+async function returnRespondersToAvailable(responderIds) {
+  for (const responderId of responderIds) {
+    const stillAssigned = await Incident.exists({ assignedResponders: responderId, status: { $ne: 'resolved' } });
+    if (!stillAssigned) await Responder.findByIdAndUpdate(responderId, { availability: 'available' });
+  }
+}
+
+const statusRank = { reported: 0, dispatched: 1, en_route: 2, arrived: 3, resolved: 4 };
+
+export async function setIncidentStatus(req, res) {
+  const status = req.body.status;
+  const allowed = ['dispatched', 'en_route', 'arrived', 'resolved'];
+  if (!allowed.includes(status)) return res.status(400).json({ error: 'Invalid incident status' });
+  const incident = await populateIncident(Incident.findOne({ incidentNo: Number(req.params.number) }));
+  if (!incident) return res.status(404).json({ error: 'Incident not found' });
+  const responder = req.workspaceRole === 'responder' ? await Responder.findOne({ user: req.user._id }) : null;
+  if (responder && !incident.assignedResponders.some((unit) => String(unit._id) === String(responder._id))) {
+    return res.status(403).json({ error: 'Only an assigned responder can update this incident' });
+  }
+  if (statusRank[status] < statusRank[incident.status]) return res.status(409).json({ error: 'Incident status cannot move backward' });
+  if (status === incident.status) return res.json(incidentDto(incident));
+  incident.status = status;
+  incident.statusHistory.push({ status, by: req.user._id });
+  await incident.save();
+  if (status === 'resolved') await returnRespondersToAvailable(incident.assignedResponders.map((unit) => unit._id));
+  const populated = await populateIncident(Incident.findById(incident._id));
+  await notifyIncident('incident:updated', populated);
+  return res.json(incidentDto(populated));
+}
