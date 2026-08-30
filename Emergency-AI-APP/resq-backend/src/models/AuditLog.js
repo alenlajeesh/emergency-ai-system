@@ -1,0 +1,1 @@
+import mongoose from 'mongoose'; export default mongoose.model('AuditLog', new mongoose.Schema({ actor: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, action: String, target: String, metadata: mongoose.Schema.Types.Mixed }, { timestamps: true }));

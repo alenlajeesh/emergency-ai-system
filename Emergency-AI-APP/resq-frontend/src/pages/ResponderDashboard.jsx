@@ -1,312 +1,131 @@
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { RefreshCw, ChevronDown } from 'lucide-react';
-import {
-  listIncidents,
-  advanceStatus,
-  clearAllIncidents,
-  simulateIncident,
-  chipsFor,
-} from '../mock/api';
-import StatusBadge from '../components/StatusBadge';
-import IncidentMap from '../components/IncidentMap';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { AlertTriangle, CheckCircle2, Crosshair, MapPin, Radio, RefreshCw, Route, Siren } from 'lucide-react';
+import { apiClient } from '../api/client';
+import WorkspaceHeader from '../components/WorkspaceHeader';
+import ResqMap from '../components/ResqMap';
+import StatusPill from '../components/StatusPill';
+import useCurrentLocation from '../hooks/useCurrentLocation';
+import useRealtime from '../hooks/useRealtime';
 import './ResponderDashboard.css';
+import './ResponderRoute.css';
 
-const MODES = [
-  { key: 'all', label: 'All' },
-  { key: 'normal', label: 'Normal' },
-  { key: 'disaster', label: 'Disaster' },
-  { key: 'world_cup', label: 'World Cup' },
-];
-
-const URGENCY_OPTIONS = ['All urgency', 'critical', 'medium', 'low'];
-const STATUS_OPTIONS = ['All status', 'reported', 'dispatched', 'en_route', 'arrived', 'resolved'];
-
-const TABS = ['Triage', 'Operator', 'Details', 'Live Voice'];
+const statusActions = {
+  dispatched: ['en_route', 'Start route'],
+  en_route: ['arrived', 'Mark arrived'],
+  arrived: ['resolved', 'Resolve incident'],
+};
 
 export default function ResponderDashboard() {
-  const [, forceRefresh] = useState(0);
-  const [modeFilter, setModeFilter] = useState('all');
-  const [urgencyFilter, setUrgencyFilter] = useState('All urgency');
-  const [statusFilter, setStatusFilter] = useState('All status');
-  const [selectedId, setSelectedId] = useState(null);
-  const [activeTab, setActiveTab] = useState('Triage');
-  const [layers, setLayers] = useState({ incidents: true, responders: true, clusters: true });
-  const [realtime, setRealtime] = useState(true);
+  const [profile, setProfile] = useState(null);
+  const [incidents, setIncidents] = useState([]);
+  const [selectedNumber, setSelectedNumber] = useState(null);
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [route, setRoute] = useState(null);
+  const [routeError, setRouteError] = useState('');
+  const { location: deviceLocation, status: locating, error: geoError, detect } = useCurrentLocation(false);
 
-  const allIncidents = listIncidents();
+  const load = useCallback(async () => {
+    try {
+      const [nextProfile, nextQueue] = await Promise.all([apiClient.responderProfile(), apiClient.responderQueue()]);
+      setProfile(nextProfile);
+      setIncidents(nextQueue);
+      setSelectedNumber((current) => current || nextQueue[0]?.number || null);
+    } catch (reason) { setError(reason.message); }
+  }, []);
 
-  const incidents = useMemo(() => {
-    return allIncidents.filter((inc) => {
-      if (modeFilter !== 'all' && inc.mode !== modeFilter) return false;
-      if (urgencyFilter !== 'All urgency' && inc.analysis.severity !== urgencyFilter) return false;
-      if (statusFilter !== 'All status' && inc.status !== statusFilter) return false;
-      return true;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allIncidents.length, modeFilter, urgencyFilter, statusFilter, selectedId]);
+  useEffect(() => { load(); }, [load]);
+  const live = useRealtime(load);
+  const selected = incidents.find((item) => item.number === selectedNumber) || null;
 
-  const selected = incidents.find((i) => i.id === selectedId) || null;
-  const criticalCount = allIncidents.filter((i) => i.analysis.severity === 'critical').length;
-  const operatorLoad = Math.min(96, 4 + allIncidents.length * 4);
+  useEffect(() => {
+    let active = true;
+    if (!selected || !profile?.location) { setRoute(null); setRouteError(''); return undefined; }
+    setRoute(null); setRouteError('');
+    apiClient.computeRoute(profile.location, selected.location)
+      .then((next) => { if (active) setRoute(next); })
+      .catch(() => { if (active) setRouteError('Road-route ETA is unavailable until the server Maps key is configured.'); });
+    return () => { active = false; };
+  }, [selected?.number, selected?.location?.lat, selected?.location?.lng, profile?.location?.lat, profile?.location?.lng]);
 
-  function refresh() {
-    forceRefresh((n) => n + 1);
+  const mapMarkers = useMemo(() => [
+    ...(profile?.location ? [{ id: 'self', title: 'Your live location', position: { lat: profile.location.lat, lng: profile.location.lng }, kind: 'self', label: 'You' }] : []),
+    ...incidents.map((item) => ({ id: item.id, title: `${item.id} — ${item.category.label}`, position: { lat: item.location.lat, lng: item.location.lng }, kind: item.severity, label: '!' })),
+  ], [profile, incidents]);
+
+  async function updatePosition() {
+    setBusy(true); setError('');
+    try { const coords = await detect(); if (!coords) return; await apiClient.updateResponderLocation(coords); await load(); }
+    catch (reason) { setError(reason.message); } finally { setBusy(false); }
   }
 
-  function accept(id) {
-    advanceStatus(id);
-    refresh();
+  async function toggleAvailability() {
+    setBusy(true); setError('');
+    try {
+      if (profile?.availability === 'available') await apiClient.updateResponderAvailability('offline');
+      else {
+        let coords = deviceLocation || profile?.location;
+        if (!coords) coords = await detect();
+        if (!coords) return;
+        await apiClient.updateResponderLocation(coords);
+        await apiClient.updateResponderAvailability('available');
+      }
+      await load();
+    } catch (reason) { setError(reason.message); } finally { setBusy(false); }
   }
 
-  function runSimulation(kind) {
-    const incident = simulateIncident(kind);
-    refresh();
-    setSelectedId(incident.id);
-    setActiveTab('Triage');
+  async function accept() {
+    if (!selected) return;
+    setBusy(true); setError('');
+    try { await apiClient.acceptIncident(selected.number); await load(); }
+    catch (reason) { setError(reason.message); } finally { setBusy(false); }
   }
 
-  function clearAll() {
-    clearAllIncidents();
-    setSelectedId(null);
-    refresh();
+  async function updateStatus(status) {
+    if (!selected) return;
+    setBusy(true); setError('');
+    try { await apiClient.updateResponderIncident(selected.number, status); await load(); }
+    catch (reason) { setError(reason.message); } finally { setBusy(false); }
   }
 
-  function resetView() {
-    setSelectedId(null);
-  }
-
-  return (
-    <div className="rdash">
-      {/* ---- Top bar ---- */}
-      <header className="rdash__topbar">
-        <div className="rdash__brandblock">
-          <span className="rdash__eyebrow mono">ECC</span>
-          <h1 className="rdash__title">Emergency Command Center</h1>
-        </div>
-        <span className="rdash__allmodes">ALL MODES</span>
-
-        <div className="rdash__persona">
-          <span className="rdash__persona-label mono">PERSONA</span>
-          <button className="rdash__select">
-            Developer <ChevronDown size={13} />
-          </button>
-        </div>
-
-        <div className="rdash__modetoggle">
-          {MODES.map((m) => (
-            <button
-              key={m.key}
-              className={`rdash__modetoggle-btn ${modeFilter === m.key ? 'rdash__modetoggle-btn--active' : ''}`}
-              onClick={() => setModeFilter(m.key)}
-            >
-              {m.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="rdash__stat">
-          <span className="rdash__stat-value">{allIncidents.length}</span>
-          <span className="rdash__stat-label mono">ACTIVE CALLS</span>
-        </div>
-        <div className="rdash__stat">
-          <span className="rdash__stat-value">{criticalCount}</span>
-          <span className="rdash__stat-label mono">CRITICAL</span>
-        </div>
-        <div className="rdash__stat">
-          <span className="rdash__stat-value">{operatorLoad}%</span>
-          <span className="rdash__stat-label mono">OPERATOR LOAD</span>
-        </div>
-
-        <div className="rdash__opload">
-          <div className="rdash__opload-top">
-            <span className="mono">OPERATOR LOAD</span>
-            <span className="mono">{operatorLoad}%</span>
-          </div>
-          <div className="rdash__opload-detail mono">
-            <span className="rdash__opload-dot" />
-            1 human active / {Math.max(0, allIncidents.filter((i) => i.status === 'reported').length)} require operators / 0 assigned
-          </div>
-        </div>
-
-        <button className="rdash__iconbtn" onClick={refresh}>
-          <RefreshCw size={14} /> Refresh
-        </button>
-        <button
-          className={`rdash__realtime ${realtime ? 'rdash__realtime--on' : ''}`}
-          onClick={() => setRealtime((r) => !r)}
-        >
-          Realtime
-        </button>
-      </header>
-
-      {/* ---- Demo controls ---- */}
-      <div className="rdash__demobar">
-        <span className="rdash__demolabel mono">DEMO CONTROLS</span>
-        <button className="rdash__demobtn" onClick={() => runSimulation('disaster')}>Disaster simulation</button>
-        <button className="rdash__demobtn" onClick={() => runSimulation('world_cup')}>World Cup simulation</button>
-        <button className="rdash__demobtn rdash__demobtn--danger" onClick={clearAll}>Clear all incidents</button>
-        <button className="rdash__demobtn rdash__demobtn--accent" onClick={refresh}>Refresh incidents</button>
-        <button className="rdash__demobtn" onClick={resetView}>Reset view / clear selection</button>
-      </div>
-
-      {/* ---- Body ---- */}
-      <div className="rdash__body">
-        <aside className="rdash__list">
-          <div className="rdash__list-head">
-            <p className="rdash__list-title">INCIDENT QUEUE</p>
-            <p className="rdash__list-count">{incidents.length} shown</p>
-          </div>
-
-          <div className="rdash__filters">
-            <label className="rdash__filter">
-              <span className="mono">URGENCY</span>
-              <select value={urgencyFilter} onChange={(e) => setUrgencyFilter(e.target.value)}>
-                {URGENCY_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
-              </select>
-            </label>
-            <label className="rdash__filter">
-              <span className="mono">STATUS</span>
-              <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-                {STATUS_OPTIONS.map((o) => <option key={o} value={o}>{o.replace('_', ' ')}</option>)}
-              </select>
-            </label>
-          </div>
-
-          <div className="rdash__cards">
-            {incidents.length === 0 && <p className="rdash__empty">No incidents match these filters.</p>}
-            {incidents.map((inc) => (
-              <button
-                key={inc.id}
-                className={`rdash__card rdash__card--${inc.analysis.severity} ${selectedId === inc.id ? 'rdash__card--selected' : ''}`}
-                onClick={() => setSelectedId(inc.id)}
-              >
-                <div className="rdash__card-top">
-                  <span className="mono rdash__card-id">{inc.id}</span>
-                  <StatusBadge severity={inc.analysis.severity} />
-                </div>
-                <p className="rdash__card-cat">{inc.analysis.category.icon} {inc.analysis.category.label}</p>
-                <p className="rdash__card-desc">{inc.text}</p>
-                <div className="rdash__card-chips">
-                  {chipsFor(inc).map((c) => <span key={c} className="rdash__chip">{c}</span>)}
-                </div>
-                <div className="rdash__card-meta mono">
-                  <span>{inc.location?.label ?? '—'}</span>
-                </div>
-              </button>
-            ))}
-          </div>
+  const openCount = incidents.filter((item) => item.status !== 'resolved').length;
+  return <div className="responder-dashboard">
+    <WorkspaceHeader dark title="Responder workspace" backTo="/responder" actions={<span className={`live-indicator ${live ? 'on' : ''}`}><i/> {live ? 'LIVE' : 'CONNECTING'}</span>}/>
+    <main className="responder-dashboard__main">
+      <section className="responder-dashboard__top">
+        <div><p className="responder-dashboard__eyebrow">VERIFIED RESPONSE NETWORK</p><h1>{profile ? `${profile.service} response` : 'Response workspace'}</h1><p>Every open incident is shown with a live distance from your shared location. Accept only when you can respond safely.</p></div>
+        <div className="responder-status"><span>Availability</span><button className={profile?.availability === 'available' ? 'available' : ''} onClick={toggleAvailability} disabled={busy || profile?.availability === 'assigned'}>{profile?.availability === 'available' ? 'Available' : profile?.availability === 'assigned' ? 'Assigned' : 'Offline'}</button><small>{profile?.code || 'Loading profile…'}</small></div>
+      </section>
+      {(error || geoError) && <p className="workspace-error">{error || geoError}</p>}
+      <section className="responder-dashboard__tools">
+        <button onClick={updatePosition} disabled={busy || locating === 'locating'}><Crosshair size={16}/>{locating === 'locating' ? 'Locating…' : profile?.location ? 'Update my GPS position' : 'Share my GPS position'}</button>
+        <span><MapPin size={15}/>{profile?.location ? (profile.locationUpdatedAt ? `Last position: ${new Date(profile.locationUpdatedAt).toLocaleTimeString()}` : 'Location shared') : 'No location shared yet'}</span>
+        <button className="responder-dashboard__refresh" onClick={load} disabled={busy}><RefreshCw size={15}/> Refresh</button>
+      </section>
+      <section className="responder-dashboard__layout">
+        <aside className="responder-queue">
+          <div className="responder-queue__head"><div><p>OPEN INCIDENTS</p><h2>{openCount} live</h2></div><Radio size={17}/></div>
+          <div className="responder-queue__list">{incidents.length === 0 ? <div className="responder-queue__empty"><CheckCircle2 size={25}/><strong>No open incidents</strong><span>New citizen reports will appear here in real time.</span></div> : incidents.map((item) => <button key={item.id} className={`${selectedNumber === item.number ? 'selected ' : ''}${item.serviceMatch ? 'match' : ''}`} onClick={() => setSelectedNumber(item.number)}><div><span>{item.id}</span><StatusPill value={item.severity}/></div><h3>{item.category.icon} {item.category.label}</h3><p>{item.text}</p><footer><b><Route size={12}/>{item.distanceKm === null ? 'Share location to calculate distance' : `${item.distanceKm} km away`}</b>{item.assignedToMe && <em>Assigned to you</em>}</footer></button>)}</div>
         </aside>
-
-        <section className="rdash__map">
-          <IncidentMap incidents={incidents} selectedId={selectedId} onSelect={setSelectedId} layers={layers} />
-
-          <div className="rdash__layers">
-            <div className="rdash__layers-head">
-              <span>LAYERS</span>
-              <span className="rdash__layers-phase mono">PHASE 11</span>
-            </div>
-            <p className="rdash__layers-sub">Incidents, responders, and derived cluster markers</p>
-            <LayerToggle label="Incidents" on={layers.incidents} onChange={(v) => setLayers((l) => ({ ...l, incidents: v }))} />
-            <LayerToggle label="Responders" on={layers.responders} onChange={(v) => setLayers((l) => ({ ...l, responders: v }))} />
-            <LayerToggle label="Clusters" on={layers.clusters} onChange={(v) => setLayers((l) => ({ ...l, clusters: v }))} />
-          </div>
-        </section>
-
-        <aside className="rdash__detail">
-          {!selected ? (
-            <p className="rdash__empty">Select an incident to view details.</p>
-          ) : (
-            <>
-              <div className="rdash__detail-head">
-                <span className="mono">{selected.id}</span>
-                <StatusBadge severity={selected.analysis.severity} />
-                <span className="rdash__pill">{selected.analysis.severity === 'low' ? 'NON-EMERGENCY' : 'EMERGENCY'}</span>
-              </div>
-
-              <h2 className="rdash__detail-cat">{selected.analysis.category.label}</h2>
-              <p className="rdash__detail-report">{selected.text}</p>
-
-              <div className="rdash__tabs">
-                {TABS.map((t) => (
-                  <button
-                    key={t}
-                    className={`rdash__tab ${activeTab === t ? 'rdash__tab--active' : ''}`}
-                    onClick={() => setActiveTab(t)}
-                  >
-                    {t.toUpperCase()}
-                  </button>
-                ))}
-              </div>
-
-              {activeTab === 'Triage' ? (
-                <>
-                  <p className="rdash__section-label">RECOMMENDED ACTION</p>
-                  <div className="rdash__recommended">{selected.recommendedAction}</div>
-
-                  <p className="rdash__section-label">MISSING FIELDS</p>
-                  <ul className="rdash__missing">
-                    {selected.missingFields.map((f) => (
-                      <li key={f}><span className="rdash__missing-dot" />{f}</li>
-                    ))}
-                  </ul>
-
-                  <div className="rdash__detail-row">
-                    <span>AI confidence</span>
-                    <span className="mono">{selected.analysis.confidence}%</span>
-                  </div>
-                  <div className="rdash__detail-row">
-                    <span>Location</span>
-                    <span className="mono">{selected.location?.label ?? '—'}</span>
-                  </div>
-                  <div className="rdash__detail-row">
-                    <span>Required</span>
-                    <span>{selected.analysis.required.join(' · ')}</span>
-                  </div>
-
-                  <p className="rdash__section-label">NEAREST UNITS</p>
-                  {selected.responders.map((r) => (
-                    <div key={r.id} className="rdash__unit">
-                      <span>{r.label}</span>
-                      <span className="mono">{r.distanceKm} km</span>
-                    </div>
-                  ))}
-
-                  <div className="rdash__actions">
-                    <button
-                      className="rdash__accept"
-                      disabled={selected.status !== 'reported'}
-                      onClick={() => accept(selected.id)}
-                    >
-                      {selected.status === 'reported' ? 'Accept & Dispatch' : `Status: ${selected.status.replace('_', ' ')}`}
-                    </button>
-                    <Link className="rdash__view-citizen" to={`/status/${selected.id}`}>View citizen status →</Link>
-                  </div>
-                </>
-              ) : (
-                <div className="rdash__tab-stub">
-                  <p>{activeTab} view isn't wired up yet — this is where {activeTab.toLowerCase()} tools will live once the backend's in place.</p>
-                </div>
-              )}
-            </>
-          )}
-        </aside>
-      </div>
-    </div>
-  );
+        <section className="responder-map"><ResqMap markers={mapMarkers} route={route} center={profile?.location ? { lat: profile.location.lat, lng: profile.location.lng } : undefined} onMarkerClick={(marker) => marker.id?.startsWith('INC-') && setSelectedNumber(Number(marker.id.replace('INC-', '')))}/><div className="responder-map__legend"><span><i className="incident"/> Incidents</span><span><i className="self"/> Your location</span></div></section>
+        <aside className="responder-detail">{selected ? <IncidentDetail incident={selected} profile={profile} route={route} routeError={routeError} busy={busy} onAccept={accept} onUpdate={updateStatus}/> : <div className="responder-detail__empty"><Siren size={26}/>Select an incident to review it.</div>}</aside>
+      </section>
+    </main>
+  </div>;
 }
 
-function LayerToggle({ label, on, onChange }) {
-  return (
-    <div className="rdash__layer-row">
-      <span>{label}</span>
-      <button
-        className={`rdash__switch ${on ? 'rdash__switch--on' : ''}`}
-        onClick={() => onChange(!on)}
-        aria-pressed={on}
-      >
-        <span className="rdash__switch-knob" />
-      </button>
-    </div>
-  );
+function IncidentDetail({ incident, profile, route, routeError, busy, onAccept, onUpdate }) {
+  const action = statusActions[incident.status];
+  const roadKm = route?.distanceMeters ? Math.round(route.distanceMeters / 100) / 10 : null;
+  const etaMin = route?.durationSeconds ? Math.max(1, Math.round(route.durationSeconds / 60)) : null;
+  return <>
+    <div className="responder-detail__meta"><span>{incident.id}</span><StatusPill value={incident.status}/></div><h2>{incident.category.icon} {incident.category.label}</h2><p className="responder-detail__description">{incident.text}</p>
+    <div className="responder-detail__location"><MapPin size={16}/><span>{incident.location.label}</span></div>
+    <div className="responder-detail__metric"><Route size={16}/><span><strong>{roadKm ? `${roadKm} km by road` : incident.distanceKm === null ? 'Location required' : `${incident.distanceKm} km direct`}</strong><small>{etaMin ? `Estimated drive: ~${etaMin} min` : 'Distance is based on your live GPS position'}</small></span></div>
+    {routeError && <p className="responder-detail__route-error">{routeError}</p>}
+    <section><p className="responder-detail__label">RECOMMENDED SERVICES</p><div className="responder-detail__services">{incident.requiredServices.map((service) => <span key={service}>{service}</span>)}</div></section>
+    <section><p className="responder-detail__label">RESPONSE NOTES</p><div className="responder-detail__action"><AlertTriangle size={16}/>{incident.recommendedAction}</div></section>
+    {incident.manualVerification && <p className="responder-detail__verify">Manual verification requested before dispatch.</p>}
+    <div className="responder-detail__buttons">{!incident.assignedToMe && incident.status !== 'resolved' && <button className="primary" disabled={busy || profile?.availability !== 'available' || !incident.serviceMatch} onClick={onAccept}>{!incident.serviceMatch ? 'Service not requested' : profile?.availability === 'available' ? 'Accept this incident' : 'Set availability to accept'}</button>}{incident.assignedToMe && action && <button className="primary" disabled={busy} onClick={() => onUpdate(action[0])}>{action[1]}</button>}{incident.assignedToMe && <button className="secondary" disabled>{incident.status.replace('_', ' ')}</button>}</div>
+  </>;
 }
