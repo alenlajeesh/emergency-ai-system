@@ -48,8 +48,8 @@ export default function ReportEmergency() {
     setPhase('result');
   }
 
-  function handleConfirm() {
-    const incident = createIncident({ text, reportMode: mode, analysis, location });
+  async function handleConfirm() {
+    const incident = await createIncident({ text, reportMode: mode, analysis, location });
     navigate(`/status/${incident.id}`);
   }
 

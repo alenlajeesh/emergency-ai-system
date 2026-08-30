@@ -1,12 +1,16 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { listIncidents } from '../mock/api';
+import { listIncidents, loadIncidents } from '../mock/api';
 import StatusBadge from '../components/StatusBadge';
 import './MyReports.css';
 
 export default function MyReports() {
   const navigate = useNavigate();
+  const [, refresh] = useState(0);
   const incidents = listIncidents();
+
+  useEffect(() => { loadIncidents().then(() => refresh((n) => n + 1)); }, []);
 
   return (
     <div className="myreports">

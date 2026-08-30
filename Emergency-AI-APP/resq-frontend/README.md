@@ -1,12 +1,17 @@
 # RESQ — Frontend (Citizen + Responder)
 
-Plain React (Vite) + plain CSS, no Tailwind. Mock AI/data layer so it runs
-standalone; swap `src/mock/api.js` for real API calls later without
-touching any component.
+React (Vite) + plain CSS, paired with a dependency-free Node API. The API
+persists incidents in `resq-backend/data/incidents.json` and includes text
+classification, simulated location lookup, responder selection, and status updates.
 
 ## Run it
 
 ```bash
+cd resq-backend
+npm run dev
+
+# in another terminal
+cd ../resq-frontend
 npm install
 npm run dev
 ```
@@ -33,7 +38,11 @@ and separate apps/roles.
   marker positions from incident id), and a detail panel with
   Accept & Dispatch
 
-## Where the "AI" actually lives
+## API endpoints
+
+`GET /api/health`, `POST /api/analyze`, `GET /api/location`, `GET/POST/DELETE /api/incidents`, and `GET/PATCH /api/incidents/:id`.
+
+## Classification and fallback
 
 `src/mock/api.js`:
 - `classifyReport({ text })` — keyword-scored category + severity +

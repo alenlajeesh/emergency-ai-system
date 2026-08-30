@@ -11,6 +11,17 @@ const CATEGORIES = [
   { key: 'other', label: 'Other', icon: '⚠️', keywords: [] },
 ];
 
+// The app remains usable if the API is temporarily unavailable, but every core
+// action below prefers the persistent backend exposed through Vite's /api proxy.
+async function request(path, options) {
+  const response = await fetch(`/api${path}`, {
+    headers: { 'Content-Type': 'application/json' },
+    ...options,
+  });
+  if (!response.ok) throw new Error(`API request failed: ${response.status}`);
+  return response.status === 204 ? null : response.json();
+}
+
 const CRITICAL_SIGNALS = ['unconscious', 'not responding', 'trapped', 'explosion', 'weapon', 'collapsed', 'fire', 'not breathing', 'bleeding heavily'];
 const MEDIUM_SIGNALS = ['injured', 'minor', 'small', 'smoke', 'crash', 'accident'];
 
@@ -52,21 +63,20 @@ function scoreText(text) {
 
 // Simulates AI text understanding with a short "thinking" delay.
 export function classifyReport({ text }) {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(scoreText(text)), 900);
-  });
+  return request('/analyze', { method: 'POST', body: JSON.stringify({ text }) })
+    .catch(() => new Promise((resolve) => setTimeout(() => resolve(scoreText(text)), 500)));
 }
 
 // Simulates reverse-geocoding a lat/lng into a readable place name.
 export function detectLocation() {
   const spots = ['MG Road, Bengaluru', 'Indiranagar 100ft Road, Bengaluru', 'Silk Board Junction, Bengaluru', 'Koramangala 5th Block, Bengaluru'];
-  return new Promise((resolve) => {
+  return request('/location').catch(() => new Promise((resolve) => {
     setTimeout(() => resolve({
       lat: (12.9 + Math.random() * 0.1).toFixed(4),
       lng: (77.55 + Math.random() * 0.1).toFixed(4),
       label: spots[Math.floor(Math.random() * spots.length)],
     }), 500);
-  });
+  }));
 }
 
 const RESPONDERS = [
@@ -117,27 +127,46 @@ const CHIPS_BY_STATUS = {
 let incidentSeq = 1024;
 const incidentStore = [];
 
-export function createIncident({ text, reportMode = 'text', simMode = 'normal', analysis, location }) {
+function addIncident({ text, reportMode = 'text', simMode = 'normal', analysis, location, remote }) {
   const incident = {
-    id: `INC${incidentSeq++}`,
+    id: remote?.id || `INC${incidentSeq++}`,
     text,
     reportMode, // how the citizen filed it: text | voice | photo
     mode: simMode, // normal | disaster | world_cup — used by the responder mode filter
     analysis,
     location,
-    status: 'reported',
-    createdAt: new Date().toISOString(),
-    responders: findNearestResponders(analysis.required),
-    etaMin: Math.floor(3 + Math.random() * 8),
-    recommendedAction: RECOMMENDED_ACTION[analysis.category.key] || RECOMMENDED_ACTION.other,
-    missingFields: MISSING_FIELDS[analysis.category.key] || MISSING_FIELDS.other,
+    status: remote?.status || 'reported',
+    createdAt: remote?.createdAt || new Date().toISOString(),
+    responders: remote?.responders || findNearestResponders(analysis.required),
+    etaMin: remote?.etaMin || Math.floor(3 + Math.random() * 8),
+    recommendedAction: remote?.recommendedAction || RECOMMENDED_ACTION[analysis.category.key] || RECOMMENDED_ACTION.other,
+    missingFields: remote?.missingFields || MISSING_FIELDS[analysis.category.key] || MISSING_FIELDS.other,
   };
   incidentStore.unshift(incident);
   return incident;
 }
 
+export async function createIncident(input) {
+  try {
+    const remote = await request('/incidents', { method: 'POST', body: JSON.stringify(input) });
+    return addIncident({ ...input, analysis: remote.analysis, location: remote.location, remote });
+  } catch {
+    return addIncident(input);
+  }
+}
+
 export function listIncidents() {
   return incidentStore;
+}
+
+export async function loadIncidents() {
+  try {
+    const remote = await request('/incidents');
+    incidentStore.splice(0, incidentStore.length, ...remote);
+    return incidentStore;
+  } catch {
+    return incidentStore;
+  }
 }
 
 export function getIncident(id) {
@@ -154,11 +183,13 @@ export function advanceStatus(id) {
   if (!incident) return null;
   const idx = flow.indexOf(incident.status);
   if (idx < flow.length - 1) incident.status = flow[idx + 1];
+  request(`/incidents/${id.replace('INC', '')}/status`, { method: 'PATCH', body: JSON.stringify({ status: incident.status }) }).catch(() => {});
   return incident;
 }
 
 export function clearAllIncidents() {
   incidentStore.length = 0;
+  request('/incidents', { method: 'DELETE' }).catch(() => {});
 }
 
 const SIM_SCENARIOS = {
@@ -176,7 +207,10 @@ export function simulateIncident(kind) {
   const scenario = SIM_SCENARIOS[kind];
   if (!scenario) return null;
   const analysis = scoreText(scenario.text);
-  return createIncident({ text: scenario.text, reportMode: 'text', simMode: kind, analysis, location: scenario.location });
+  // Kept synchronous for the dispatcher controls; simulation is also persisted.
+  const incident = addIncident({ text: scenario.text, reportMode: 'text', simMode: kind, analysis, location: scenario.location });
+  request('/incidents', { method: 'POST', body: JSON.stringify({ text: scenario.text, reportMode: 'text', simMode: kind, analysis, location: scenario.location }) }).catch(() => {});
+  return incident;
 }
 
 export const CATEGORY_LIST = CATEGORIES;
@@ -189,14 +223,14 @@ export function markerLetterFor(categoryKey) {
 // Seed a couple of demo incidents so the responder dashboard isn't empty
 // on first load, before any citizen report has been filed in this session.
 function seed() {
-  createIncident({
+  addIncident({
     text: "A vehicle crashed near the junction and one person is unconscious.",
     reportMode: 'text',
     simMode: 'normal',
     analysis: scoreText("A vehicle crashed near the junction and one person is unconscious, bleeding heavily."),
     location: { lat: '12.9352', lng: '77.6146', label: 'Silk Board Junction, Bengaluru' },
   });
-  createIncident({
+  addIncident({
     text: "Small electrical spark from a broken streetlight, nothing serious.",
     reportMode: 'text',
     simMode: 'normal',

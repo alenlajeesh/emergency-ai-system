@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { RefreshCw, ChevronDown } from 'lucide-react';
 import {
@@ -7,6 +7,7 @@ import {
   clearAllIncidents,
   simulateIncident,
   chipsFor,
+  loadIncidents,
 } from '../mock/api';
 import StatusBadge from '../components/StatusBadge';
 import IncidentMap from '../components/IncidentMap';
@@ -33,6 +34,8 @@ export default function ResponderDashboard() {
   const [activeTab, setActiveTab] = useState('Triage');
   const [layers, setLayers] = useState({ incidents: true, responders: true, clusters: true });
   const [realtime, setRealtime] = useState(true);
+
+  useEffect(() => { loadIncidents().then(() => forceRefresh((n) => n + 1)); }, []);
 
   const allIncidents = listIncidents();
 

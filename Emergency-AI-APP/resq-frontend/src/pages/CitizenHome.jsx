@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapPin, ClipboardList, PhoneCall, ChevronRight } from 'lucide-react';
 import RadarButton from '../components/RadarButton';
-import { detectLocation, listIncidents } from '../mock/api';
+import { detectLocation, listIncidents, loadIncidents } from '../mock/api';
 import './CitizenHome.css';
 
 export default function CitizenHome() {
   const navigate = useNavigate();
   const [location, setLocation] = useState(null);
+  const [, refresh] = useState(0);
   const recentCount = listIncidents().length;
 
   useEffect(() => {
     detectLocation().then(setLocation);
+    loadIncidents().then(() => refresh((n) => n + 1));
   }, []);
 
   return (
