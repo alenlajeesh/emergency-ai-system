@@ -1,0 +1,1910 @@
+[{
+    "text": "Person unconscious and not responding",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone isn't breathing normally",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Severe chest pain and heavy sweating",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Baby choking and turning blue",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Seizure has continued for several minutes",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Heavy bleeding from a deep wound",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Possible overdose; barely conscious",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Fell from a height and lost consciousness",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Severe allergic reaction with throat swelling",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Pulled from water and not breathing",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "No pulse can be felt after collapse",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Struggling to breathe and becoming unresponsive",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Serious head injury, now unconscious",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Choking and unable to speak",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Multiple people sick after exposure; one unconscious",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Help now, they won't wake up",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Severe bleeding and the casualty looks faint",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Person collapsed suddenly and is turning pale",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Possible stroke symptoms with sudden weakness and confusion",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Active seizure and the person hit their head",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Cyclist injured but awake and stable",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Deep cut needs medical attention",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Possible broken arm after a fall",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Fainted but awake and talking now",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Persistent severe abdominal pain",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Burn is blistering but no breathing problem",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Hit head and feels dizzy, still conscious",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Moderate asthma episode, needs assistance",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Repeated vomiting and looks dehydrated",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "High fever and unusually lethargic",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Possible fractured ankle",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Nosebleed has not stopped",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Conscious worker cannot move one leg",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Several people have food poisoning symptoms",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Chest discomfort but alert and speaking",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Animal bite needs treatment",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Painful eye injury from debris",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Serious rash and swelling but breathing normally",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Back injury after lifting, movement is painful",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Person feels weak after losing some blood from a cut",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Possible dislocated shoulder, awake and stable",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Heat exhaustion symptoms, conscious and drinking water",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Small scrape; first aid already given",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Mild dizziness while sitting safely",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Minor headache, no other symptoms",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Tiny cut and they say they are okay",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Brief cough but no distress now",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Asked where the nearest clinic is",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Minor nausea with no danger signs",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Small bruise after a bump",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Major collision with people trapped inside",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Vehicle crash; driver unconscious",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Motorcycle rider not moving after impact",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Multiple cars crashed and several people are badly injured",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Bus accident with passengers trapped",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Car is overturned and someone is bleeding heavily",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Pedestrian struck and not responding",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Crash caused a fire and occupants may be trapped",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Truck collision with a person pinned underneath",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "High-speed crash; casualty unconscious",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Two vehicles collided and one person cannot breathe properly",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Pileup with multiple injured people",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Scooter rider has severe head injury and is unconscious",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Vehicle went into water with someone still inside",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Train crossing accident with immediate injuries",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Two cars collided; occupants are awake but injured",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Minor road crash with possible broken arm",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Bike accident; rider has cuts and is conscious",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Vehicle hit a wall, significant property damage",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Parking collision with one person complaining of neck pain",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Caller reports a stable injury after a fall from a bicycle",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Car door accident caused a hand injury",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Small pileup, everyone appears conscious",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Motorcycle and car collision; rider is awake",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Taxi accident with moderate damage and a passenger hurt",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Vehicle struck a barrier; no one trapped",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "A delivery van backed into someone, injury appears stable",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Road accident, ambulance may be needed but all are responsive",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Two riders collided and both have painful injuries",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Boat collision with minor injuries reported",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Construction vehicle accident; worker is conscious but hurt",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Car rolled slowly into a ditch; occupants are awake",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "A bus braked suddenly and several passengers have minor injuries",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Collision damaged a pole and one person is complaining of pain",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Bike crash; helmeted rider is alert but cannot stand",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Small fender bender, no injuries",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Parking scrape, just property damage",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Two vehicles touched at low speed and everyone is okay",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Minor bicycle fall, rider got back up",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Shopping cart hit a parked car, no danger",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Old accident debris found, no active incident",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Caller wants to report a pothole that caused a minor scrape",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Scooter tipped over while parked",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "No one hurt; requesting traffic assistance after a tiny collision",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Vehicle has a flat tire, not an emergency",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Minor dent from reversing; situation resolved",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Found a damaged sign after an earlier crash",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Low-speed bump, both drivers exchanged details",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "A bicycle chain broke and caused a harmless fall",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Small mirror collision, no injuries",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Fire!! help now, flames spreading",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Active house fire with people possibly inside",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Smoke and flames coming from an apartment",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Vehicle is burning with someone near it",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Kitchen fire is spreading rapidly",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Warehouse fire, thick smoke everywhere",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Gas fire with flames near occupied rooms",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Building alarmed and visible flames are growing",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "People are trapped above an active fire",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Electrical fire spreading along equipment",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Large rubbish fire threatening nearby homes",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Fire in a crowded building; evacuation underway",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Flames coming from a bus with passengers nearby",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Forest fire approaching occupied structures",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Caller reports explosion followed by active fire",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Smoke is heavy and people cannot safely exit",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Fire has reached the roof",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Multiple rooms are burning",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone is trapped in a burning vehicle",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Help, the fire is getting bigger fast",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Small room fire has been contained but still smoking",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Trash bin fire near a building, no one injured",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Electrical panel is smoking and may ignite",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Vehicle smoke reported; no visible flames yet",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Controlled fire got out of hand briefly, now contained",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Shed fire with no people inside",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Cooking oil fire was extinguished but area is hot",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Small grass fire moving slowly",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Smoke from machinery; workers evacuated",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Dumpster fire, contained to one area",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Possible fire behind a wall, smell of burning",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Fire extinguisher used but responders requested to inspect",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "A small appliance fire damaged the kitchen",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Campfire spread beyond its ring but no structures threatened",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Burning smell and visible smoke from a garage",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Fire alarm triggered with light smoke in a hallway",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Paper fire extinguished, checking for remaining danger",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Small outdoor fire close to dry vegetation",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Smoke coming from a parked vehicle",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Generator caught fire but flames are currently limited",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Burning smell but no smoke or flames visible",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Old fire report; incident already resolved",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Smoke from legal cooking, no emergency",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Someone asked for fire safety information",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "A candle went out and everything is safe",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Fire alarm was accidentally triggered and reset",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Small amount of steam mistaken for smoke",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Cold ashes found near a campsite",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Minor scorch mark discovered after an earlier incident",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Caller is reporting a non-urgent faulty smoke detector",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Weapon involved; people are in immediate danger",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone is being attacked right now",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Armed person threatening others",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Active break-in with occupants hiding inside",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Violent fight and one person may be seriously hurt",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Shots were heard and people are fleeing",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Hostage situation reported",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Intruder is forcing entry and threatening residents",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Person with a knife is attacking someone",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Robbery in progress with a weapon",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Crowd violence is escalating rapidly",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Caller reports an assault happening now",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone is trying to harm another person with an object",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Immediate threat at a public place",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Violent intruder is still on scene",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Suspicious person repeatedly trying doors",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Fight reported but currently separated",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Possible theft just occurred; suspect left",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Someone is aggressively threatening a neighbor",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Property vandalism in progress, no weapon seen",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Caller saw a person attempting to break into a vehicle",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Harassment report; victim is safe for now",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Unknown person refusing to leave private property",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Possible scammer trying to enter homes",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Loud confrontation that may escalate",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Security camera shows repeated trespassing",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Someone damaged property and is still nearby",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Person behaving erratically but not attacking anyone",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Unauthorized access to a restricted area",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "A bag was stolen; no immediate confrontation",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Repeated stalking concern, no immediate attack",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Suspicious package reported, area has been cleared",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Caller believes a burglary happened earlier",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Someone is blocking an exit during an argument",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Threatening messages received, no immediate physical danger",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Noise complaint with no threat",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Lost property found; requesting security desk",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Minor argument has ended",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Caller wants to report suspicious behavior from earlier",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Door was left unlocked but nothing appears stolen",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "A person was seen taking photos of a building, no threat observed",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Non-urgent request for patrol information",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Parking dispute, everyone is calm",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Security badge was misplaced",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Caller wants advice about reporting online harassment",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Minor rule violation at a facility",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Someone entered the wrong area accidentally",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Old vandalism discovered with no suspect present",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Non-emergency trespass report from yesterday",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "A harmless prank caused concern",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Floodwater is rapidly entering homes and people are trapped",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Building collapse with people possibly under debris",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Earthquake caused major structural damage and injuries",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Landslide blocked homes and trapped residents",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Severe storm has destroyed roofs with people inside",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Dam burst reported; water is rising quickly",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Tornado-like winds causing immediate destruction",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Bridge collapsed during heavy flooding",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Large chemical release affecting many people",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Wildfire is forcing immediate evacuation",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Major explosion damaged several buildings",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Tsunami warning with people unable to evacuate",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Heavy rain caused sudden flooding around occupied vehicles",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Avalanche trapped multiple people",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Severe structural collapse after an explosion",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Flooding has blocked roads but people are safe",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Earthquake caused cracks and minor damage",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Landslide has closed a road with no trapped people reported",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Storm damaged several buildings, injuries appear minor",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Water level is rising slowly near a neighborhood",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Strong winds brought down trees onto roads",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Minor chemical spill contained but needs assessment",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Heavy rain is causing localized street flooding",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Building has visible cracks after tremors",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Heatwave is causing widespread discomfort and service strain",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Dust storm reduced visibility and caused traffic disruption",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Small sinkhole appeared near a road",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Powerful storm damaged utility lines",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "River is above normal level but not yet overflowing homes",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Snowstorm has stranded vehicles but occupants are safe",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Volcanic ash is affecting travel but no immediate injuries",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Earth tremor reported, awaiting inspection",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Coastal surge damaged property but has receded",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Severe weather warning with some local damage",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Mudslide near a trail; route blocked",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Weather advisory only, no damage reported",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Light flooding in an empty field",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Small tremor felt but no damage observed",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Caller requests information about an approaching storm",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Old landslide debris found, road already cleared",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Minor rainwater pooling, traffic still moving",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Non-urgent report of erosion near a path",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Wind knocked over an empty sign",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Temperature is high but no emergency symptoms reported",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Cloud formation looks unusual; caller is worried",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Flash flooding is covering roads; residents are being advised to avoid the area",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "A retaining wall partially failed, but nobody is trapped",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Severe winds damaged windows; occupants have moved to a safe room",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Caller reports smoke from a distant wildfire with no local threat yet",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Minor aftershock felt; no damage or injuries reported",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Child missing and may be near fast-moving traffic",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Vulnerable person missing after leaving during a severe storm",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone disappeared near deep water and cannot be located",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Missing person has a known immediate safety risk",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Young child wandered away in a crowded dangerous area",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Person missing after a vehicle crash",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Individual with serious medical needs is missing",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone was last seen entering a hazardous area",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Missing hiker may be injured and night is approaching",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Child cannot be found after a fire evacuation",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Person missing after flood evacuation",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Vulnerable adult disappeared in freezing conditions",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone may be trapped and unaccounted for after collapse",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Missing person sent an alarming message suggesting immediate danger",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "A child is missing near an active construction site",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Person has been missing for several hours; welfare concern",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Older adult has not returned as expected",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Hiker overdue but route is known",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Child briefly separated from guardian in a large venue",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Person missing after leaving home upset",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Caller cannot locate a family member with no known immediate danger",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Someone failed to arrive and is unreachable",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Vulnerable person wandered from a care setting",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Teenager missing since earlier today",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Person lost contact while traveling",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Guardian reports a child missing in a public park",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Someone has not returned from a routine walk",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Lost tourist cannot find their group",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Person missing from an event, search underway",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Caller reports an overdue worker who may be lost",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Individual left a facility without telling staff",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Missing pet-like description was mistakenly submitted for a person, clarification needed",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Person is unaccounted for after a minor evacuation",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Someone got separated during a parade",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Caller reports a missing person with limited details",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Person was missing briefly but has returned safely",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Looking for someone who is simply late, no risk known",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Caller wants information on how to file a missing report",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Adult has been unreachable for a short time",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Child was found before responders were needed",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Lost contact due to a dead phone, now resolved",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Non-urgent update to an older missing report",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Person changed plans without informing others",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Caller is unsure whether absence qualifies as missing",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "The individual is accounted for; closing the report",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Someone is late to a meeting, no safety concern",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Missing report was entered by mistake",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Person is probably with relatives but not confirmed",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Caller wants to correct a previously filed report",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Separated from group but currently communicating by message",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Large gas leak with people feeling ill",
+    "category": "other",
+    "severity": "critical"
+  },
+  {
+    "text": "Downed live power line is arcing near pedestrians",
+    "category": "other",
+    "severity": "critical"
+  },
+  {
+    "text": "Elevator occupants report smoke and difficulty breathing",
+    "category": "other",
+    "severity": "critical"
+  },
+  {
+    "text": "Unknown chemical is causing multiple people to collapse",
+    "category": "other",
+    "severity": "critical"
+  },
+  {
+    "text": "Bridge railing failure has left people in immediate danger",
+    "category": "other",
+    "severity": "critical"
+  },
+  {
+    "text": "Water leak is spreading across a floor and causing a slip hazard",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Large tree branch is blocking one lane",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Power line appears damaged but no one is near it",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Elevator stopped with occupants inside who are communicating",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Strong gas smell outside, source unknown but no symptoms reported",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Road is blocked by debris after a minor event",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Public water pipe burst and traffic is affected",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Loose construction material may fall if wind increases",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Animal is injured and blocking traffic",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Large sinkhole is developing but area is cordoned off",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Unknown substance spilled; no exposure reported",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Crowded area has a structural concern requiring inspection",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Broken traffic signal is causing near-misses",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "A utility box is sparking intermittently but no fire yet",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Heavy object fell onto a walkway; area needs closure",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Streetlight is broken, no immediate danger",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Garbage collection was missed",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Caller wants directions to a public service",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Water leak is small and contained",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Noise from construction during daytime",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Stray animal is wandering but not aggressive",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Pothole reported with no accident",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Power outage in one building, everyone safe",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Broken bench in a park",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Informational question about local emergency services",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Lost wallet, no threat involved",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Minor drainage issue after rain",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Public restroom is damaged",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Caller reports litter near a walkway",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Non-urgent complaint about traffic noise",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "A sign is faded and hard to read",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Tree branch is low but not blocking traffic",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Small water puddle on a sidewalk",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Request to update contact information",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Elevator is slow but operating",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Someone wants to report a bad smell outdoors",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Mailbox is damaged",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Minor graffiti on a wall",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Public bin is full but not overflowing dangerously",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "A fence is leaning slightly",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Non-emergency animal welfare question",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Caller found an abandoned umbrella",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Routine maintenance request for a playground",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Loose pavement tile, people can walk around it",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Street cleaning information requested",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Armed robber is holding staff at gunpoint inside a store",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Intruder broke a window and is inside the house right now",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "A masked person just grabbed a purse and pulled out a weapon",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "A group is surrounding and threatening a shopkeeper with weapons",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone forced their way into a locked office after hours",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone tried to pick the lock on our front door",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "A stranger is loitering and peering through car windows in the lot",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "A group is spray painting a wall and refusing to leave when asked",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Someone is repeatedly ringing doorbells and running off",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "A person is filming into private windows from the street",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "A store alarm went off but no one appears to be inside",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Neighbor heard someone at their gate late at night, nothing since",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Caller wants to know how to file a report about a scam phone call",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Asking what the process is to report a stolen bicycle from last week",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "A car veered off the road and flipped into a ditch",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Truck jackknifed on the highway, blocking both lanes",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "A cyclist swerved to avoid a car and fell hard onto the curb",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Vehicle rear-ended another at a red light, both bumpers damaged",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "A scooter skidded on the wet road and tipped over",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "A delivery truck clipped a lamppost while turning",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Car alarm went off after a light bump in the parking lot",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "A trailer detached from a parked truck, no one was nearby",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Two bicycles brushed against each other at low speed",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "A diabetic person is unresponsive after a suspected insulin reaction",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Someone is having a severe asthma attack and can barely speak",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "A worker collapsed at their desk and won't wake up",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "A construction worker strained their back lifting equipment",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Person has an allergic reaction with visible hives, still breathing fine",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "An elderly resident fell in the bathroom and can't get up but is talking",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "A student fainted briefly in class and is now awake and responsive",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Caller wants information about the nearest pharmacy",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "A minor sports injury during a football match, player walked off fine",
+    "category": "medical",
+    "severity": "low"
+  }]

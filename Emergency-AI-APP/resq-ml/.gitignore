@@ -1,0 +1,11 @@
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# Trained model artifacts — regenerable from train.py + data/dataset.json,
+# binary files don't belong in git history
+models/*.joblib
+
+# Env vars / secrets if this service ever gets its own .env
+.env
