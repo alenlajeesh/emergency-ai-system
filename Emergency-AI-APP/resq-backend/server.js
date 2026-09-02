@@ -8,7 +8,7 @@ import User from './src/models/User.js';
 import { attachRealtime } from './src/realtime.js';
 import { hasRole } from './src/utils/roles.js';
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 8000;
 const clientOrigins = process.env.CLIENT_ORIGIN?.split(',').map((origin) => origin.trim()).filter(Boolean);
 
 await connectDatabase();
