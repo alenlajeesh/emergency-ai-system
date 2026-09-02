@@ -12,6 +12,8 @@ const categories = [
   ['missing', 'Missing person', '🔍', ['missing', 'lost', "can't find"]],
 ];
 
+const ML_SERVICE_URL = process.env.ML_SERVICE_URL || 'http://localhost:8001';
+
 const requiredServices = {
   medical: ['medical'], accident: ['medical', 'security'], fire: ['fire', 'medical'],
   security: ['security'], disaster: ['fire', 'medical', 'security'], missing: ['security'], other: ['security'],
@@ -61,7 +63,7 @@ async function analyzeTextML({ text }) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 3000);
   try {
-    const res = await fetch('http://localhost:8000/classify', {
+    const res = await fetch(`${ML_SERVICE_URL}/classify`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text }),

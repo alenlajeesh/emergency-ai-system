@@ -3,8 +3,8 @@ from pydantic import BaseModel
 import joblib
 
 app = FastAPI()
-category_model = joblib.load('category_model.joblib')
-severity_model = joblib.load('severity_model.joblib')
+category_model = joblib.load('models/category_model.joblib')
+severity_model = joblib.load('models/severity_model.joblib')
 
 REQUIRED_SERVICES = {
     'medical': ['medical'], 'accident': ['medical', 'security'], 'fire': ['fire', 'medical'],
