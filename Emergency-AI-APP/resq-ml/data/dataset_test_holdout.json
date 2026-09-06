@@ -1,0 +1,292 @@
+[
+  {
+    "text": "Small pileup, everyone appears conscious",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "A bag was stolen; no immediate confrontation",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Earthquake caused cracks and minor damage",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "A worker collapsed at their desk and won't wake up",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Crash caused a fire and occupants may be trapped",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Caller reports an assault happening now",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Person is probably with relatives but not confirmed",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "A small appliance fire damaged the kitchen",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Caller is unsure whether absence qualifies as missing",
+    "category": "missing",
+    "severity": "low"
+  },
+  {
+    "text": "Large gas leak with people feeling ill",
+    "category": "other",
+    "severity": "critical"
+  },
+  {
+    "text": "Old landslide debris found, road already cleared",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Someone forced their way into a locked office after hours",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Avalanche trapped multiple people",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "Caller reports a stable injury after a fall from a bicycle",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Missing pet-like description was mistakenly submitted for a person, clarification needed",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Older adult has not returned as expected",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "Kitchen fire is spreading rapidly",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Small grass fire moving slowly",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Bridge railing failure has left people in immediate danger",
+    "category": "other",
+    "severity": "critical"
+  },
+  {
+    "text": "Public water pipe burst and traffic is affected",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Minor argument has ended",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Mudslide near a trail; route blocked",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Missing person has a known immediate safety risk",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Armed robber is holding staff at gunpoint inside a store",
+    "category": "security",
+    "severity": "critical"
+  },
+  {
+    "text": "Two vehicles collided and one person cannot breathe properly",
+    "category": "accident",
+    "severity": "critical"
+  },
+  {
+    "text": "Scooter tipped over while parked",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Downed live power line is arcing near pedestrians",
+    "category": "other",
+    "severity": "critical"
+  },
+  {
+    "text": "Guardian reports a child missing in a public park",
+    "category": "missing",
+    "severity": "medium"
+  },
+  {
+    "text": "A store alarm went off but no one appears to be inside",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "A retaining wall partially failed, but nobody is trapped",
+    "category": "disaster",
+    "severity": "medium"
+  },
+  {
+    "text": "Person missing after a vehicle crash",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Mild dizziness while sitting safely",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Old fire report; incident already resolved",
+    "category": "fire",
+    "severity": "low"
+  },
+  {
+    "text": "Minor rule violation at a facility",
+    "category": "security",
+    "severity": "low"
+  },
+  {
+    "text": "Caller wants information about the nearest pharmacy",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Smoke coming from a parked vehicle",
+    "category": "fire",
+    "severity": "medium"
+  },
+  {
+    "text": "Landslide blocked homes and trapped residents",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "A student fainted briefly in class and is now awake and responsive",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Someone tried to pick the lock on our front door",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Motorcycle and car collision; rider is awake",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Minor headache, no other symptoms",
+    "category": "medical",
+    "severity": "low"
+  },
+  {
+    "text": "Harassment report; victim is safe for now",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Heavy bleeding from a deep wound",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Building collapse with people possibly under debris",
+    "category": "disaster",
+    "severity": "critical"
+  },
+  {
+    "text": "A cyclist swerved to avoid a car and fell hard onto the curb",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Active seizure and the person hit their head",
+    "category": "medical",
+    "severity": "critical"
+  },
+  {
+    "text": "Stray animal is wandering but not aggressive",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Vehicle hit a wall, significant property damage",
+    "category": "accident",
+    "severity": "medium"
+  },
+  {
+    "text": "Gas fire with flames near occupied rooms",
+    "category": "fire",
+    "severity": "critical"
+  },
+  {
+    "text": "Minor bicycle fall, rider got back up",
+    "category": "accident",
+    "severity": "low"
+  },
+  {
+    "text": "Person missing after flood evacuation",
+    "category": "missing",
+    "severity": "critical"
+  },
+  {
+    "text": "Routine maintenance request for a playground",
+    "category": "other",
+    "severity": "low"
+  },
+  {
+    "text": "Someone is repeatedly ringing doorbells and running off",
+    "category": "security",
+    "severity": "medium"
+  },
+  {
+    "text": "Moderate asthma episode, needs assistance",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Unknown substance spilled; no exposure reported",
+    "category": "other",
+    "severity": "medium"
+  },
+  {
+    "text": "Person has an allergic reaction with visible hives, still breathing fine",
+    "category": "medical",
+    "severity": "medium"
+  },
+  {
+    "text": "Weather advisory only, no damage reported",
+    "category": "disaster",
+    "severity": "low"
+  },
+  {
+    "text": "Burning smell but no smoke or flames visible",
+    "category": "fire",
+    "severity": "low"
+  }
+]
