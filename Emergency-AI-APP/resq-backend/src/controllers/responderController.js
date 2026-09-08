@@ -70,29 +70,41 @@ export async function accept(req, res) {
   const responder = await currentResponder(req.user._id);
   if (!responder) return res.status(404).json({ error: 'Responder profile not found' });
   if (responder.availability !== 'available') return res.status(409).json({ error: 'Set your status to available before accepting an incident' });
+
+  const target = await Incident.findOne({ incidentNo: Number(req.params.number) })
+    .select('status requiredServices assignments assignedResponders');
+  if (!target) return res.status(404).json({ error: 'Incident not found' });
+  if (target.status === 'resolved') return res.status(409).json({ error: 'This incident has already been resolved' });
+  if (!target.requiredServices.includes(responder.service)) return res.status(403).json({ error: 'Your response service is not required for this incident' });
+  if (target.assignments?.some((assignment) => assignment.service === responder.service)) {
+    return res.status(409).json({ error: `A ${responder.service} responder has already accepted this incident` });
+  }
+
+  const update = {
+    $addToSet: { assignedResponders: responder._id },
+    $push: { assignments: { responder: responder._id, service: responder.service } },
+  };
+  // Advance the shared status only the first time anyone accepts. A required
+  // service that joins later (e.g. security accepting after medical is
+  // already en route) must not regress progress medical already made.
+  if (target.status === 'reported') {
+    update.$set = { status: 'dispatched' };
+    update.$push.statusHistory = { status: 'dispatched', by: req.user._id };
+  }
+
   const incident = await populateIncident(Incident.findOneAndUpdate(
     {
       incidentNo: Number(req.params.number),
-      status: { $in: ['reported', 'dispatched'] },
+      status: target.status,               // optimistic guard against a concurrent status change
       requiredServices: responder.service,
       assignedResponders: { $ne: responder._id },
-      'assignments.responder': { $ne: responder._id },
       'assignments.service': { $ne: responder.service },
     },
-    {
-      $addToSet: { assignedResponders: responder._id },
-      $set: { status: 'dispatched' },
-      $push: { assignments: { responder: responder._id, service: responder.service }, statusHistory: { status: 'dispatched', by: req.user._id } },
-    },
+    update,
     { new: true },
   ));
-  if (!incident) {
-    const target = await Incident.findOne({ incidentNo: Number(req.params.number) }).select('requiredServices assignments');
-    if (!target) return res.status(404).json({ error: 'Incident not found' });
-    if (!target.requiredServices.includes(responder.service)) return res.status(403).json({ error: 'Your response service is not required for this incident' });
-    if (target.assignments?.some((assignment) => assignment.service === responder.service)) return res.status(409).json({ error: `A ${responder.service} responder has already accepted this incident` });
-    return res.status(409).json({ error: 'This incident is no longer available to accept' });
-  }
+  if (!incident) return res.status(409).json({ error: 'This incident was just updated — please retry' });
+
   responder.availability = 'assigned';
   await responder.save();
   const populated = await populateIncident(Incident.findById(incident._id));
@@ -100,4 +112,15 @@ export async function accept(req, res) {
   emit('responders', 'incident:updated', dto); emit('admins', 'incident:updated', dto);
   populated.reports.forEach((report) => emit(`user:${report.reporter}`, 'incident:updated', dto));
   return res.json(dto);
+}
+
+export async function getResponderIncident(req, res) {
+  const responder = await currentResponder(req.user._id);
+  if (!responder) return res.status(403).json({ error: 'Responder profile not found' });
+  const incident = await populateIncident(Incident.findOne({ incidentNo: Number(req.params.number), status: { $ne: 'resolved' } }));
+  if (!incident) return res.status(404).json({ error: 'Incident not found' });
+  return res.json(incidentDto(incident, {
+    serviceMatch: incident.requiredServices.includes(responder.service),
+    assignedToMe: incident.assignedResponders.some((unit) => String(unit._id) === String(responder._id)),
+  }));
 }

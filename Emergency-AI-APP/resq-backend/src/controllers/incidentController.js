@@ -33,7 +33,7 @@ export async function preview(req, res) {
 }
 
 export async function create(req, res) {
-  const { text, reportMode = 'text', location, imageUrl } = req.body;
+  const { text, reportMode = 'text', location, imageUrl, audioUrl } = req.body;
   if (!text?.trim() || !location?.label?.trim() || !locationIsValid(location)) {
     return res.status(400).json({ error: 'A description and a valid current location are required' });
   }
@@ -48,7 +48,7 @@ export async function create(req, res) {
   }));
 
   if (duplicate && duplicate.category === triage.category) {
-    duplicate.reports.push({ reporter: req.user._id, text: text.trim(), mode: reportMode, imageUrl });
+    duplicate.reports.push({ reporter: req.user._id, text: text.trim(), mode: reportMode, imageUrl, audioUrl });
     await duplicate.save();
     await notifyIncident('incident:updated', duplicate);
     return res.status(200).json({ ...incidentDto(duplicate), mergedWithExisting: true });
@@ -56,7 +56,7 @@ export async function create(req, res) {
 
   const incident = await Incident.create({
     incidentNo: await nextIncidentNumber(),
-    reports: [{ reporter: req.user._id, text: text.trim(), mode: reportMode, imageUrl }],
+    reports: [{ reporter: req.user._id, text: text.trim(), mode: reportMode, imageUrl, audioUrl }],
     category: triage.category,
     severity: triage.severity,
     confidence: triage.confidence,

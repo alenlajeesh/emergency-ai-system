@@ -14,6 +14,7 @@ const reportSchema = new mongoose.Schema(
     text: { type: String, required: true, trim: true, maxlength: 3000 },
     mode: { type: String, enum: ['text', 'voice', 'photo'], default: 'text' },
     imageUrl: String,
+    audioUrl: String,
     createdAt: { type: Date, default: Date.now },
   },
   { _id: true },

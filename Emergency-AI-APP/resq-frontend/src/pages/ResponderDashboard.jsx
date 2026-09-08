@@ -6,6 +6,7 @@ import ResqMap from '../components/ResqMap';
 import StatusPill from '../components/StatusPill';
 import useCurrentLocation from '../hooks/useCurrentLocation';
 import useRealtime from '../hooks/useRealtime';
+import { resolveMediaUrl } from '../lib/media'; // <-- ADDED
 import './ResponderDashboard.css';
 import './ResponderRoute.css';
 
@@ -120,6 +121,7 @@ function IncidentDetail({ incident, profile, route, routeError, busy, onAccept, 
   const etaMin = route?.durationSeconds ? Math.max(1, Math.round(route.durationSeconds / 60)) : null;
   return <>
     <div className="responder-detail__meta"><span>{incident.id}</span><StatusPill value={incident.status}/></div><h2>{incident.category.icon} {incident.category.label}</h2><p className="responder-detail__description">{incident.text}</p>
+    {(incident.imageUrl || incident.audioUrl) && <section className="responder-detail__media"><p className="responder-detail__label">ATTACHED BY REPORTER</p>{incident.imageUrl && <img src={resolveMediaUrl(incident.imageUrl)} alt="Reported scene" />}{incident.audioUrl && <audio controls src={resolveMediaUrl(incident.audioUrl)} />}</section>}
     <div className="responder-detail__location"><MapPin size={16}/><span>{incident.location.label}</span></div>
     <div className="responder-detail__metric"><Route size={16}/><span><strong>{roadKm ? `${roadKm} km by road` : incident.distanceKm === null ? 'Location required' : `${incident.distanceKm} km direct`}</strong><small>{etaMin ? `Estimated drive: ~${etaMin} min` : 'Distance is based on your live GPS position'}</small></span></div>
     {routeError && <p className="responder-detail__route-error">{routeError}</p>}
