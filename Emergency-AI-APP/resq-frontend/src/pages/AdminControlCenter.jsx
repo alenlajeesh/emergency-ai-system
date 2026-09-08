@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { holoMapStyle } from '../lib/mapstyles';
 import {
   Activity,
   BarChart3,
@@ -225,9 +226,11 @@ export default function AdminControlCenter() {
             </div>
           </aside>
 
-          <section className="admin-map">
+          <section className="admin-map admin-map--holo">
+          
             <ResqMap
               markers={markers}
+              mapStyle={holoMapStyle}
               onMarkerClick={(marker) =>
                 marker.id.startsWith('INC-') &&
                 setSelectedNumber(
@@ -235,6 +238,7 @@ export default function AdminControlCenter() {
                 )
               }
             />
+            <div className="admin-map__scan" aria-hidden="true" />
 
             <div className="admin-map__layers">
               <p>MAP LAYERS</p>

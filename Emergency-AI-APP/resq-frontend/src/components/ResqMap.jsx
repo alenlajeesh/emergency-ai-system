@@ -4,23 +4,24 @@ import { googleMapsConfigured, loadGoogleMaps } from '../lib/googleMaps';
 import './ResqMap.css';
 
 const fallbackCenter = { lat: 20, lng: 0 };
-const darkStyles = [
-  { elementType: 'geometry', stylers: [{ color: '#111827' }] }, { elementType: 'labels.text.stroke', stylers: [{ color: '#111827' }] },
+const darkStyles = [ { elementType: 'geometry', stylers: [{ color: '#111827' }] }, { elementType: 'labels.text.stroke', stylers: [{ color: '#111827' }] },
   { elementType: 'labels.text.fill', stylers: [{ color: '#78849a' }] }, { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#273447' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0a1423' }] }, { featureType: 'poi', stylers: [{ visibility: 'off' }] },
-];
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0a1423' }] }, { featureType: 'poi', stylers: [{ visibility: 'off' }] }, ];
 
 function markerIcon(kind) {
   if (kind === 'responder') return 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
   if (kind === 'self') return 'https://maps.google.com/mapfiles/ms/icons/green-dot.png';
+  if (kind === 'picked') return 'https://maps.google.com/mapfiles/ms/icons/purple-dot.png';
   if (kind === 'critical') return 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
   if (kind === 'medium') return 'https://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
   return 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png';
 }
 
-export default function ResqMap({ markers = [], center, zoom = 13, onMarkerClick, route, className = '' }) {
+export default function ResqMap({ markers = [], center, zoom = 13, onMarkerClick, route, className = '', mapStyle, onLocationPick }) {
   const node = useRef(null); const mapRef = useRef(null); const rendered = useRef([]); const routeLine = useRef(null);
+  const pickRef = useRef(onLocationPick);
   const [error, setError] = useState(''); const [ready, setReady] = useState(false);
+  pickRef.current = onLocationPick; // always keep latest callback without re-creating the map
 
   useEffect(() => {
     if (!googleMapsConfigured()) return undefined;
@@ -30,11 +31,18 @@ export default function ResqMap({ markers = [], center, zoom = 13, onMarkerClick
       mapRef.current = new google.maps.Map(node.current, {
         center: center || markers[0]?.position || fallbackCenter, zoom, disableDefaultUI: true, zoomControl: true,
         mapId: import.meta.env.VITE_GOOGLE_MAP_ID || undefined,
-        ...(import.meta.env.VITE_GOOGLE_MAP_ID ? {} : { styles: darkStyles }),
-      }); setReady(true);
+        ...(import.meta.env.VITE_GOOGLE_MAP_ID ? {} : { styles: mapStyle || darkStyles }),
+      });
+      mapRef.current.addListener('click', (event) => {
+        if (!pickRef.current) return;
+        pickRef.current({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+      });
+      setReady(true);
     }).catch((reason) => active && setError(reason.message));
     return () => { active = false; rendered.current.forEach((marker) => marker.setMap(null)); routeLine.current?.setMap(null); rendered.current = []; routeLine.current = null; mapRef.current = null; };
   }, []);
+
+  // ...rest of file (marker effect, route effect, decodePolyline) stays exactly the same
 
   useEffect(() => {
     if (!googleMapsConfigured()) return undefined;
@@ -71,7 +79,7 @@ export default function ResqMap({ markers = [], center, zoom = 13, onMarkerClick
 
   if (!googleMapsConfigured()) return <div className={`resq-map__empty ${className}`}><MapPinned size={25} /><strong>Map setup required</strong><span>Add <code>VITE_GOOGLE_MAPS_API_KEY</code> to the frontend environment to enable the live map.</span></div>;
   if (error) return <div className={`resq-map__empty ${className}`}><AlertTriangle size={25} /><strong>Map unavailable</strong><span>{error}</span></div>;
-  return <div ref={node} className={`resq-map ${className}`} aria-label="Live incident map" />;
+  return <div ref={node} className={`resq-map ${className} ${onLocationPick ? 'resq-map--pickable' : ''}`} aria-label="Live incident map" />;
 }
 
 function decodePolyline(encoded) {

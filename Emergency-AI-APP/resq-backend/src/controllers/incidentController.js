@@ -40,6 +40,8 @@ export async function create(req, res) {
 
   const point = [Number(location.lng), Number(location.lat)];
   const triage = await analyzeText(text);
+  const hasEvidence = Boolean(imageUrl || audioUrl);
+  if (hasEvidence){triage.manualVerification = true;}
   const recentTime = new Date(Date.now() - (10 * 60 * 1000));
   const duplicate = await populateIncident(Incident.findOne({
     'location.point': { $near: { $geometry: { type: 'Point', coordinates: point }, $maxDistance: 200 } },

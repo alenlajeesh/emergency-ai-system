@@ -62,3 +62,7 @@ a {
 .wide-shell {
   max-width: 1280px;
 }
+a, button, .resq-map, input, textarea, select {
+  transition: background-color .18s var(--ease), border-color .18s var(--ease), color .18s var(--ease), transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+button:active { transform: scale(.97); }
