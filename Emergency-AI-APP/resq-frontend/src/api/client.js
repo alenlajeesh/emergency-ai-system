@@ -29,7 +29,7 @@ export const apiClient = {
   login: (payload) => api('/auth/login', { method: 'POST', body: payload, authenticated: false }),
   signup: (payload) => api('/auth/register', { method: 'POST', body: payload, authenticated: false }),
   me: () => api('/auth/me'),
-  upload: (file) => { const form = new FormData(); form.append('image', file); return api('/uploads', { method: 'POST', body: form }); },
+  upload: (file) => { const form = new FormData(); form.append('file', file); return api('/uploads', { method: 'POST', body: form }); },
   reverseGeocode: ({ lat, lng }) => api(`/maps/reverse-geocode?lat=${encodeURIComponent(lat)}&lng=${encodeURIComponent(lng)}`),
   computeRoute: (origin, destination) => api('/maps/route', { method: 'POST', body: { origin, destination } }),
   previewTriage: (text) => api('/citizen/triage-preview', { method: 'POST', body: { text } }),

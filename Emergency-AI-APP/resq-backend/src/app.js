@@ -20,8 +20,9 @@ const upload = multer({
     destination: async (req, file, callback) => { await mkdir('uploads', { recursive: true }); callback(null, 'uploads'); },
     filename: (req, file, callback) => callback(null, `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_')}`),
   }),
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (req, file, callback) => callback(null, file.mimetype.startsWith('image/')),
+  limits: { fileSize: 8 * 1024 * 1024 },
+  // Citizens can attach either a scene photo or a recorded voice note now.
+  fileFilter: (req, file, callback) => callback(null, file.mimetype.startsWith('image/') || file.mimetype.startsWith('audio/')),
 });
 
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
@@ -33,9 +34,10 @@ app.use('/uploads', express.static('uploads'));
 
 app.get('/api/health', (req, res) => res.json({ ok: true, service: 'resq-api' }));
 app.use('/api/auth', authRoutes);
-app.post('/api/uploads', requireAuth, allowRoles('citizen'), upload.single('image'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'Choose a valid image under 5 MB' });
-  return res.status(201).json({ imageUrl: `/uploads/${req.file.filename}` });
+app.post('/api/uploads', requireAuth, allowRoles('citizen'), upload.single('file'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'Choose a valid image or audio clip under 8 MB' });
+  const kind = req.file.mimetype.startsWith('audio/') ? 'audio' : 'image';
+  return res.status(201).json({ url: `/uploads/${req.file.filename}`, kind });
 });
 app.use('/api/citizen', citizenRoutes);
 app.use('/api/responder', responderRoutes);
